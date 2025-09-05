@@ -159,6 +159,7 @@ public class DragonController {
             responses = {
                     @ApiResponse(responseCode = "200", description = "Количество найдено",
                             content = @Content(schema = @Schema(implementation = Long.class))),
+                    @ApiResponse(responseCode = "204", description = "Коллекция пуста, драконов нет", content = @Content),
                     @ApiResponse(responseCode = "400", description = "Некорректное значение параметра type", content = @Content),
                     @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content)
             }
