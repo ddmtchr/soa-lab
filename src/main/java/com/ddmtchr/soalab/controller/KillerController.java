@@ -23,6 +23,7 @@ public class KillerController {
             description = "Отмечает дракона как убитого",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Дракон убит"),
+                    @ApiResponse(responseCode = "400", description = "Неверный формат запроса", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class))),
                     @ApiResponse(responseCode = "404", description = "Дракон с таким ID не найден", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class))),
                     @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class))),
                     @ApiResponse(responseCode = "503", description = "Ошибка при обращении к стороннему сервису", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class)))
@@ -38,6 +39,7 @@ public class KillerController {
             description = "Перемещает команду убийц драконов в указанную пещеру.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Команда успешно перемещена"),
+                    @ApiResponse(responseCode = "400", description = "Неверный формат запроса", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class))),
                     @ApiResponse(responseCode = "404", description = "Команда или пещера не найдены", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class))),
                     @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class))),
                     @ApiResponse(responseCode = "503", description = "Ошибка при обращении к стороннему сервису", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class)))
