@@ -21,7 +21,9 @@ public class KillerController {
             description = "Отмечает дракона как убитого",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Дракон убит"),
-                    @ApiResponse(responseCode = "404", description = "Дракон с таким ID не найден", content = @Content)
+                    @ApiResponse(responseCode = "404", description = "Дракон с таким ID не найден", content = @Content),
+                    @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content),
+                    @ApiResponse(responseCode = "503", description = "Ошибка при обращении к стороннему сервису", content = @Content)
             }
     )
     public ResponseEntity<String> killDragon(@PathVariable Long dragonId) {
@@ -34,7 +36,9 @@ public class KillerController {
             description = "Перемещает команду убийц драконов в указанную пещеру.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Команда успешно перемещена"),
-                    @ApiResponse(responseCode = "404", description = "Команда или пещера не найдены", content = @Content)
+                    @ApiResponse(responseCode = "404", description = "Команда или пещера не найдены", content = @Content),
+                    @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content),
+                    @ApiResponse(responseCode = "503", description = "Ошибка при обращении к стороннему сервису", content = @Content)
             }
     )
     public ResponseEntity<String> moveTeam(@PathVariable Long teamId, @PathVariable Long caveId) {
