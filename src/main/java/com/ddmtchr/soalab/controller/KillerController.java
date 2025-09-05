@@ -1,7 +1,9 @@
 package com.ddmtchr.soalab.controller;
 
+import com.ddmtchr.soalab.dto.ApiErrorResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
@@ -21,9 +23,9 @@ public class KillerController {
             description = "Отмечает дракона как убитого",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Дракон убит"),
-                    @ApiResponse(responseCode = "404", description = "Дракон с таким ID не найден", content = @Content),
-                    @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content),
-                    @ApiResponse(responseCode = "503", description = "Ошибка при обращении к стороннему сервису", content = @Content)
+                    @ApiResponse(responseCode = "404", description = "Дракон с таким ID не найден", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class))),
+                    @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class))),
+                    @ApiResponse(responseCode = "503", description = "Ошибка при обращении к стороннему сервису", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class)))
             }
     )
     public ResponseEntity<String> killDragon(@PathVariable Long dragonId) {
@@ -36,9 +38,9 @@ public class KillerController {
             description = "Перемещает команду убийц драконов в указанную пещеру.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Команда успешно перемещена"),
-                    @ApiResponse(responseCode = "404", description = "Команда или пещера не найдены", content = @Content),
-                    @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content),
-                    @ApiResponse(responseCode = "503", description = "Ошибка при обращении к стороннему сервису", content = @Content)
+                    @ApiResponse(responseCode = "404", description = "Команда или пещера не найдены", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class))),
+                    @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class))),
+                    @ApiResponse(responseCode = "503", description = "Ошибка при обращении к стороннему сервису", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class)))
             }
     )
     public ResponseEntity<String> moveTeam(@PathVariable Long teamId, @PathVariable Long caveId) {
