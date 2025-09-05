@@ -29,8 +29,7 @@ public class DragonDto {
     @NotNull
     private CoordinatesDto coordinates; //Поле не может быть null
 
-    @NotNull
-    private ZonedDateTime creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
+    private ZonedDateTime creationDate = ZonedDateTime.now(); //Поле не может быть null, Значение этого поля должно генерироваться автоматически
 
     @Positive
     private int age; //Значение поля должно быть больше 0
