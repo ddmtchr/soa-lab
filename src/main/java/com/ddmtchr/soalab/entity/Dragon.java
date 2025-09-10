@@ -2,9 +2,9 @@ package com.ddmtchr.soalab.entity;
 
 import com.ddmtchr.soalab.dto.dragon.DragonType;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,7 +20,7 @@ public class Dragon {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Positive
+    @Min(1)
     private Long id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
 
     @Column(name = "name", nullable = false)
@@ -36,7 +36,7 @@ public class Dragon {
     private ZonedDateTime creationDate = ZonedDateTime.now(); //Поле не может быть null, Значение этого поля должно генерироваться автоматически
 
     @Column(name = "age", nullable = false)
-    @Positive
+    @Min(1)
     private int age; //Значение поля должно быть больше 0
 
     @Column(name = "description", nullable = true)
@@ -44,7 +44,7 @@ public class Dragon {
 
     @Column(name = "weight", nullable = false)
     @NotNull
-    @Positive
+    @Min(1)
     private Integer weight; //Значение поля должно быть больше 0, Поле не может быть null
 
     @Column(name = "type", nullable = false)

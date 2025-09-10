@@ -1,14 +1,18 @@
 package com.ddmtchr.soalab.dto.person;
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
+import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
+@JacksonXmlRootElement(localName = "person")
+@XmlRootElement(name = "person")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -21,10 +25,10 @@ public class PersonDto {
 
     private LocalDate birthday; //Поле может быть null
 
-    @Positive
+    @Min(1)
     private long height; //Значение поля должно быть больше 0
 
-    @Positive
+    @Min(1)
     private double weight; //Значение поля должно быть больше 0
 
     @Size(min = 7, max = 34)

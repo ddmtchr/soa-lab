@@ -1,8 +1,8 @@
 package com.ddmtchr.soalab.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,11 +29,11 @@ public class Person {
     private LocalDate birthday; //Поле может быть null
 
     @Column(name = "height", nullable = false)
-    @Positive
+    @Min(1)
     private long height; //Значение поля должно быть больше 0
 
     @Column(name = "weight", nullable = false)
-    @Positive
+    @Min(1)
     private double weight; //Значение поля должно быть больше 0
 
     @Column(name = "passport_id", nullable = true)

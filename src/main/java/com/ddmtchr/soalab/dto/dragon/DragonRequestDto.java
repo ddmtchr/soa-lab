@@ -2,14 +2,16 @@ package com.ddmtchr.soalab.dto.dragon;
 
 import com.ddmtchr.soalab.dto.coordinates.CoordinatesDto;
 import com.ddmtchr.soalab.dto.person.PersonDto;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@JacksonXmlRootElement(localName = "dragon")
 @XmlRootElement(name = "dragon")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,13 +24,13 @@ public class DragonRequestDto {
     @NotNull
     private CoordinatesDto coordinates; //Поле не может быть null
 
-    @Positive
+    @Min(1)
     private int age; //Значение поля должно быть больше 0
 
     private String description; //Поле может быть null
 
     @NotNull
-    @Positive
+    @Min(1)
     private Integer weight; //Значение поля должно быть больше 0, Поле не может быть null
 
     @NotNull
