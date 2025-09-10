@@ -1,4 +1,4 @@
-package com.ddmtchr.soalab.dto;
+package com.ddmtchr.soalab.dto.dragon;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

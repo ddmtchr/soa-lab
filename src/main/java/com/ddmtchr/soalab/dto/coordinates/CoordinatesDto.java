@@ -1,4 +1,4 @@
-package com.ddmtchr.soalab.dto;
+package com.ddmtchr.soalab.dto.coordinates;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;

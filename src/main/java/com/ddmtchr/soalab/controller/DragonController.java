@@ -1,6 +1,7 @@
 package com.ddmtchr.soalab.controller;
 
-import com.ddmtchr.soalab.dto.*;
+import com.ddmtchr.soalab.dto.api.ApiErrorResponse;
+import com.ddmtchr.soalab.dto.dragon.*;
 import com.ddmtchr.soalab.service.DragonService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -33,15 +34,15 @@ public class DragonController {
             description = "Добавляет нового дракона в коллекцию. ID и дата создания генерируются автоматически.",
             responses = {
                     @ApiResponse(responseCode = "201", description = "Дракон успешно создан",
-                            content = @Content(mediaType = "application/xml", schema = @Schema(implementation = DragonDto.class))),
+                            content = @Content(mediaType = "application/xml", schema = @Schema(implementation = DragonResponseDto.class))),
                     @ApiResponse(responseCode = "400", description = "Неверный формат запроса", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class))),
                     @ApiResponse(responseCode = "409", description = "Конфликт — дракон с таким id уже существует", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class))),
                     @ApiResponse(responseCode = "422", description = "Неверные входные данные (например, пустое имя или age <= 0)", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class))),
                     @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class)))
             }
     )
-    public ResponseEntity<DragonDto> create(@RequestBody @Valid DragonDto dto) {
-        return ResponseEntity.ok(dto);
+    public ResponseEntity<DragonResponseDto> create(@RequestBody @Valid DragonRequestDto dto) {
+        return ResponseEntity.ok(new DragonResponseDto());
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_XML_VALUE)
@@ -50,14 +51,14 @@ public class DragonController {
             description = "Возвращает объект дракона по уникальному идентификатору.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Дракон найден",
-                            content = @Content(mediaType = "application/xml", schema = @Schema(implementation = DragonDto.class))),
+                            content = @Content(mediaType = "application/xml", schema = @Schema(implementation = DragonResponseDto.class))),
                     @ApiResponse(responseCode = "400", description = "Неверный формат запроса", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class))),
                     @ApiResponse(responseCode = "404", description = "Дракон с указанным ID не найден", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class))),
                     @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class)))
             }
     )
-    public ResponseEntity<DragonDto> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(new DragonDto());
+    public ResponseEntity<DragonResponseDto> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(new DragonResponseDto());
     }
 
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_XML_VALUE, consumes = MediaType.APPLICATION_XML_VALUE)
@@ -66,15 +67,15 @@ public class DragonController {
             description = "Полностью заменяет данные дракона новыми. ID и дата создания остаются прежними.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Дракон обновлён",
-                            content = @Content(mediaType = "application/xml", schema = @Schema(implementation = DragonDto.class))),
+                            content = @Content(mediaType = "application/xml", schema = @Schema(implementation = DragonResponseDto.class))),
                     @ApiResponse(responseCode = "400", description = "Неверный формат запроса", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class))),
                     @ApiResponse(responseCode = "404", description = "Дракон с таким ID не найден", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class))),
                     @ApiResponse(responseCode = "422", description = "Неверные входные данные (например, пустое имя или age <= 0)", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class))),
                     @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class)))
             }
     )
-    public ResponseEntity<DragonDto> update(@PathVariable Long id, @RequestBody @Valid DragonDto dto) {
-        return ResponseEntity.ok(dto);
+    public ResponseEntity<DragonResponseDto> update(@PathVariable Long id, @RequestBody @Valid DragonRequestDto dto) {
+        return ResponseEntity.ok(new DragonResponseDto());
     }
 
     @DeleteMapping("/{id}")
@@ -117,7 +118,7 @@ public class DragonController {
             @RequestParam(required = false) Map<String, String> filters,
             @ParameterObject Pageable pageable
     ) {
-        List<DragonDto> dragons = List.of(new DragonDto(), new DragonDto());
+        List<DragonResponseDto> dragons = List.of(new DragonResponseDto(), new DragonResponseDto());
         long total = 2L;
 
         PagedDragonListDto response = new PagedDragonListDto(dragons, pageable.getPageNumber(), pageable.getPageSize(), total);
@@ -131,13 +132,13 @@ public class DragonController {
             description = "Возвращает одного дракона, у которого поле `name` является лексикографически минимальным.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Дракон найден",
-                            content = @Content(mediaType = "application/xml", schema = @Schema(implementation = DragonDto.class))),
+                            content = @Content(mediaType = "application/xml", schema = @Schema(implementation = DragonResponseDto.class))),
                     @ApiResponse(responseCode = "204", description = "Коллекция пуста, драконов нет", content = @Content),
                     @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class)))
             }
     )
-    public ResponseEntity<DragonDto> getMinByName() {
-        return ResponseEntity.ok(new DragonDto());
+    public ResponseEntity<DragonResponseDto> getMinByName() {
+        return ResponseEntity.ok(new DragonResponseDto());
     }
 
     @GetMapping(value = "/group-by-type", produces = MediaType.APPLICATION_XML_VALUE)

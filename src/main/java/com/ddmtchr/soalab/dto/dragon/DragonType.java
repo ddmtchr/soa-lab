@@ -1,4 +1,4 @@
-package com.ddmtchr.soalab.dto;
+package com.ddmtchr.soalab.dto.dragon;
 
 public enum DragonType {
     WATER,

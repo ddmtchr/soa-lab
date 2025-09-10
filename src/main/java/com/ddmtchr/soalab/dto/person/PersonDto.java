@@ -1,4 +1,4 @@
-package com.ddmtchr.soalab.dto;
+package com.ddmtchr.soalab.dto.person;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;

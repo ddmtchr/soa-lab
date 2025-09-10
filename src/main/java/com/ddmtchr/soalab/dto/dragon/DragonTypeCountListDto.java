@@ -1,4 +1,4 @@
-package com.ddmtchr.soalab.dto;
+package com.ddmtchr.soalab.dto.dragon;
 
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
@@ -10,13 +10,13 @@ import lombok.Setter;
 
 import java.util.List;
 
-@XmlRootElement(name = "dragons")
+@XmlRootElement(name = "types-count")
 @XmlAccessorType(XmlAccessType.FIELD)
 @AllArgsConstructor
 @Getter
 @Setter
-public class DragonListDto {
+public class DragonTypeCountListDto {
 
-    @XmlElement(name = "dragon")
-    private List<DragonDto> dragons;
+    @XmlElement(name = "entry")
+    private List<DragonTypeCountDto> typeCounts;
 }

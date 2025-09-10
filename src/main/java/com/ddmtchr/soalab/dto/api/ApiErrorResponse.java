@@ -1,4 +1,4 @@
-package com.ddmtchr.soalab.dto;
+package com.ddmtchr.soalab.dto.api;
 
 import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.AllArgsConstructor;
