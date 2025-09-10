@@ -34,11 +34,11 @@ public class DragonController {
             description = "Добавляет нового дракона в коллекцию. ID и дата создания генерируются автоматически.",
             responses = {
                     @ApiResponse(responseCode = "201", description = "Дракон успешно создан",
-                            content = @Content(mediaType = "application/xml", schema = @Schema(implementation = DragonResponseDto.class))),
-                    @ApiResponse(responseCode = "400", description = "Неверный формат запроса", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class))),
-                    @ApiResponse(responseCode = "409", description = "Конфликт — дракон с таким id уже существует", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class))),
-                    @ApiResponse(responseCode = "422", description = "Неверные входные данные (например, пустое имя или age <= 0)", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class))),
-                    @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class)))
+                            content = @Content(mediaType = MediaType.APPLICATION_XML_VALUE, schema = @Schema(implementation = DragonResponseDto.class))),
+                    @ApiResponse(responseCode = "400", description = "Неверный формат запроса", content = @Content(mediaType = MediaType.APPLICATION_XML_VALUE, schema = @Schema(implementation = ApiErrorResponse.class))),
+                    @ApiResponse(responseCode = "409", description = "Конфликт — дракон с таким id уже существует", content = @Content(mediaType = MediaType.APPLICATION_XML_VALUE, schema = @Schema(implementation = ApiErrorResponse.class))),
+                    @ApiResponse(responseCode = "422", description = "Неверные входные данные (например, пустое имя или age <= 0)", content = @Content(mediaType = MediaType.APPLICATION_XML_VALUE, schema = @Schema(implementation = ApiErrorResponse.class))),
+                    @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content(mediaType = MediaType.APPLICATION_XML_VALUE, schema = @Schema(implementation = ApiErrorResponse.class)))
             }
     )
     public ResponseEntity<DragonResponseDto> create(@RequestBody @Valid DragonRequestDto dto) {
@@ -51,10 +51,10 @@ public class DragonController {
             description = "Возвращает объект дракона по уникальному идентификатору.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Дракон найден",
-                            content = @Content(mediaType = "application/xml", schema = @Schema(implementation = DragonResponseDto.class))),
-                    @ApiResponse(responseCode = "400", description = "Неверный формат запроса", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class))),
-                    @ApiResponse(responseCode = "404", description = "Дракон с указанным ID не найден", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class))),
-                    @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class)))
+                            content = @Content(mediaType = MediaType.APPLICATION_XML_VALUE, schema = @Schema(implementation = DragonResponseDto.class))),
+                    @ApiResponse(responseCode = "400", description = "Неверный формат запроса", content = @Content(mediaType = MediaType.APPLICATION_XML_VALUE, schema = @Schema(implementation = ApiErrorResponse.class))),
+                    @ApiResponse(responseCode = "404", description = "Дракон с указанным ID не найден", content = @Content(mediaType = MediaType.APPLICATION_XML_VALUE, schema = @Schema(implementation = ApiErrorResponse.class))),
+                    @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content(mediaType = MediaType.APPLICATION_XML_VALUE, schema = @Schema(implementation = ApiErrorResponse.class)))
             }
     )
     public ResponseEntity<DragonResponseDto> getById(@PathVariable Long id) {
@@ -67,11 +67,11 @@ public class DragonController {
             description = "Полностью заменяет данные дракона новыми. ID и дата создания остаются прежними.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Дракон обновлён",
-                            content = @Content(mediaType = "application/xml", schema = @Schema(implementation = DragonResponseDto.class))),
-                    @ApiResponse(responseCode = "400", description = "Неверный формат запроса", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class))),
-                    @ApiResponse(responseCode = "404", description = "Дракон с таким ID не найден", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class))),
-                    @ApiResponse(responseCode = "422", description = "Неверные входные данные (например, пустое имя или age <= 0)", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class))),
-                    @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class)))
+                            content = @Content(mediaType = MediaType.APPLICATION_XML_VALUE, schema = @Schema(implementation = DragonResponseDto.class))),
+                    @ApiResponse(responseCode = "400", description = "Неверный формат запроса", content = @Content(mediaType = MediaType.APPLICATION_XML_VALUE, schema = @Schema(implementation = ApiErrorResponse.class))),
+                    @ApiResponse(responseCode = "404", description = "Дракон с таким ID не найден", content = @Content(mediaType = MediaType.APPLICATION_XML_VALUE, schema = @Schema(implementation = ApiErrorResponse.class))),
+                    @ApiResponse(responseCode = "422", description = "Неверные входные данные (например, пустое имя или age <= 0)", content = @Content(mediaType = MediaType.APPLICATION_XML_VALUE, schema = @Schema(implementation = ApiErrorResponse.class))),
+                    @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content(mediaType = MediaType.APPLICATION_XML_VALUE, schema = @Schema(implementation = ApiErrorResponse.class)))
             }
     )
     public ResponseEntity<DragonResponseDto> update(@PathVariable Long id, @RequestBody @Valid DragonRequestDto dto) {
@@ -84,9 +84,9 @@ public class DragonController {
             description = "Удаляет дракона из коллекции по идентификатору.",
             responses = {
                     @ApiResponse(responseCode = "204", description = "Дракон удалён"),
-                    @ApiResponse(responseCode = "400", description = "Неверный формат запроса", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class))),
-                    @ApiResponse(responseCode = "404", description = "Дракон не найден", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class))),
-                    @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class)))
+                    @ApiResponse(responseCode = "400", description = "Неверный формат запроса", content = @Content(mediaType = MediaType.APPLICATION_XML_VALUE, schema = @Schema(implementation = ApiErrorResponse.class))),
+                    @ApiResponse(responseCode = "404", description = "Дракон не найден", content = @Content(mediaType = MediaType.APPLICATION_XML_VALUE, schema = @Schema(implementation = ApiErrorResponse.class))),
+                    @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content(mediaType = MediaType.APPLICATION_XML_VALUE, schema = @Schema(implementation = ApiErrorResponse.class)))
             }
     )
     public ResponseEntity<Void> delete(@PathVariable Long id) {
@@ -108,9 +108,9 @@ public class DragonController {
                 """,
             responses = {
                     @ApiResponse(responseCode = "200", description = "Страница драконов найдена",
-                            content = @Content(mediaType = "application/xml", schema = @Schema(implementation = PagedDragonListDto.class))),
-                    @ApiResponse(responseCode = "400", description = "Некорректный формат запроса или параметры фильтрации/сортировки/пагинации", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class))),
-                    @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class)))
+                            content = @Content(mediaType = MediaType.APPLICATION_XML_VALUE, schema = @Schema(implementation = PagedDragonListDto.class))),
+                    @ApiResponse(responseCode = "400", description = "Некорректный формат запроса или параметры фильтрации/сортировки/пагинации", content = @Content(mediaType = MediaType.APPLICATION_XML_VALUE, schema = @Schema(implementation = ApiErrorResponse.class))),
+                    @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content(mediaType = MediaType.APPLICATION_XML_VALUE, schema = @Schema(implementation = ApiErrorResponse.class)))
             }
     )
     public ResponseEntity<PagedDragonListDto> getAll(
@@ -132,9 +132,9 @@ public class DragonController {
             description = "Возвращает одного дракона, у которого поле `name` является лексикографически минимальным.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Дракон найден",
-                            content = @Content(mediaType = "application/xml", schema = @Schema(implementation = DragonResponseDto.class))),
+                            content = @Content(mediaType = MediaType.APPLICATION_XML_VALUE, schema = @Schema(implementation = DragonResponseDto.class))),
                     @ApiResponse(responseCode = "204", description = "Коллекция пуста, драконов нет", content = @Content),
-                    @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class)))
+                    @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content(mediaType = MediaType.APPLICATION_XML_VALUE, schema = @Schema(implementation = ApiErrorResponse.class)))
             }
     )
     public ResponseEntity<DragonResponseDto> getMinByName() {
@@ -147,15 +147,15 @@ public class DragonController {
             description = "Считает количество драконов для каждого значения поля `type`.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Результат группировки",
-                            content = @Content(mediaType = "application/xml", schema = @Schema(implementation = DragonTypeCountListDto.class))),
-                    @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class)))
+                            content = @Content(mediaType = MediaType.APPLICATION_XML_VALUE, schema = @Schema(implementation = DragonTypeCountListDto.class))),
+                    @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content(mediaType = MediaType.APPLICATION_XML_VALUE, schema = @Schema(implementation = ApiErrorResponse.class)))
             }
     )
     public ResponseEntity<DragonTypeCountListDto> countByType() {
         return ResponseEntity.ok(new DragonTypeCountListDto(List.of(new DragonTypeCountDto(DragonType.AIR, 1L))));
     }
 
-    @GetMapping("/count-by-type-greater")
+    @GetMapping("/type/count/greater")
     @Operation(
             summary = "Подсчитать количество драконов с типом больше заданного",
             description = "Считает количество элементов, у которых `type` лексикографически больше переданного значения.",
@@ -163,11 +163,11 @@ public class DragonController {
                     @ApiResponse(responseCode = "200", description = "Количество найдено",
                             content = @Content(schema = @Schema(implementation = Long.class))),
                     @ApiResponse(responseCode = "204", description = "Коллекция пуста, драконов нет", content = @Content),
-                    @ApiResponse(responseCode = "400", description = "Неверный формат запроса или некорректное значение параметра type", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class))),
-                    @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class)))
+                    @ApiResponse(responseCode = "400", description = "Неверный формат запроса или некорректное значение параметра type", content = @Content(mediaType = MediaType.APPLICATION_XML_VALUE, schema = @Schema(implementation = ApiErrorResponse.class))),
+                    @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content(mediaType = MediaType.APPLICATION_XML_VALUE, schema = @Schema(implementation = ApiErrorResponse.class)))
             }
     )
-    public ResponseEntity<Long> countByTypeGreater(@RequestParam @Valid DragonType type) {
+    public ResponseEntity<Long> countByType(@RequestParam @Valid DragonType type) {
         return ResponseEntity.ok(0L);
     }
 
