@@ -126,7 +126,7 @@ public class DragonController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping(value = "/min-by-name", produces = MediaType.APPLICATION_XML_VALUE)
+    @GetMapping(value = "/name/min", produces = MediaType.APPLICATION_XML_VALUE)
     @Operation(
             summary = "Найти дракона с минимальным именем",
             description = "Возвращает одного дракона, у которого поле `name` является лексикографически минимальным.",
@@ -141,7 +141,7 @@ public class DragonController {
         return ResponseEntity.ok(new DragonResponseDto());
     }
 
-    @GetMapping(value = "/group-by-type", produces = MediaType.APPLICATION_XML_VALUE)
+    @GetMapping(value = "/type/count", produces = MediaType.APPLICATION_XML_VALUE)
     @Operation(
             summary = "Группировка по типу",
             description = "Считает количество драконов для каждого значения поля `type`.",
@@ -151,7 +151,7 @@ public class DragonController {
                     @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class)))
             }
     )
-    public ResponseEntity<DragonTypeCountListDto> groupByType() {
+    public ResponseEntity<DragonTypeCountListDto> countByType() {
         return ResponseEntity.ok(new DragonTypeCountListDto(List.of(new DragonTypeCountDto(DragonType.AIR, 1L))));
     }
 
