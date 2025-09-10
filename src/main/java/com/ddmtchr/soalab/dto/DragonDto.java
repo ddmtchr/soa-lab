@@ -1,9 +1,5 @@
 package com.ddmtchr.soalab.dto;
 
-import com.ddmtchr.soalab.entity.Coordinates;
-import com.ddmtchr.soalab.entity.Person;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;

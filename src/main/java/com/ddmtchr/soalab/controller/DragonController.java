@@ -11,8 +11,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +32,7 @@ public class DragonController {
             summary = "Создать нового дракона",
             description = "Добавляет нового дракона в коллекцию. ID и дата создания генерируются автоматически.",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Дракон успешно создан",
+                    @ApiResponse(responseCode = "201", description = "Дракон успешно создан",
                             content = @Content(mediaType = "application/xml", schema = @Schema(implementation = DragonDto.class))),
                     @ApiResponse(responseCode = "400", description = "Неверный формат запроса", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class))),
                     @ApiResponse(responseCode = "409", description = "Конфликт — дракон с таким id уже существует", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiErrorResponse.class))),
