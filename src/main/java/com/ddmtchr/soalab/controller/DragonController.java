@@ -1,11 +1,13 @@
 package com.ddmtchr.soalab.controller;
 
+import com.ddmtchr.soalab.api.PageableEntity;
 import com.ddmtchr.soalab.dto.api.ApiErrorResponse;
 import com.ddmtchr.soalab.dto.api.ApiNumberResponse;
+import com.ddmtchr.soalab.dto.api.filter.FilterRequestDto;
 import com.ddmtchr.soalab.dto.dragon.*;
+import com.ddmtchr.soalab.entity.Dragon;
 import com.ddmtchr.soalab.service.DragonService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -15,13 +17,14 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
+
+import static org.springframework.http.MediaType.APPLICATION_XML_VALUE;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,7 +34,7 @@ public class DragonController {
 
     private final DragonService dragonService;
 
-    @PostMapping(consumes = MediaType.APPLICATION_XML_VALUE, produces = MediaType.APPLICATION_XML_VALUE)
+    @PostMapping(consumes = APPLICATION_XML_VALUE, produces = APPLICATION_XML_VALUE)
     @Operation(
             summary = "Создать нового дракона",
             description = "Добавляет нового дракона в коллекцию. ID и дата создания генерируются автоматически.",
@@ -40,13 +43,13 @@ public class DragonController {
                             responseCode = "201",
                             description = "Дракон успешно создан",
                             content = @Content(
-                                    mediaType = MediaType.APPLICATION_XML_VALUE,
+                                    mediaType = APPLICATION_XML_VALUE,
                                     schema = @Schema(implementation = DragonResponseDto.class))),
                     @ApiResponse(
                             responseCode = "400",
                             description = "Неверный формат запроса",
                             content = @Content(
-                                    mediaType = MediaType.APPLICATION_XML_VALUE,
+                                    mediaType = APPLICATION_XML_VALUE,
                                     schema = @Schema(implementation = ApiErrorResponse.class),
                                     examples = @ExampleObject(
                                             value = """
@@ -64,7 +67,7 @@ public class DragonController {
                             responseCode = "422",
                             description = "Неверные входные данные (например, пустое имя или age <= 0)",
                             content = @Content(
-                                    mediaType = MediaType.APPLICATION_XML_VALUE,
+                                    mediaType = APPLICATION_XML_VALUE,
                                     schema = @Schema(implementation = ApiErrorResponse.class),
                                     examples = @ExampleObject(
                                             value = """
@@ -82,7 +85,7 @@ public class DragonController {
                             responseCode = "500",
                             description = "Внутренняя ошибка сервера",
                             content = @Content(
-                                    mediaType = MediaType.APPLICATION_XML_VALUE,
+                                    mediaType = APPLICATION_XML_VALUE,
                                     schema = @Schema(implementation = ApiErrorResponse.class),
                                     examples = @ExampleObject(
                                             value = """
@@ -102,7 +105,7 @@ public class DragonController {
         return new ResponseEntity<>(new DragonResponseDto(), HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_XML_VALUE)
+    @GetMapping(value = "/{id}", produces = APPLICATION_XML_VALUE)
     @Operation(
             summary = "Получить дракона по ID",
             description = "Возвращает объект дракона по уникальному идентификатору.",
@@ -111,13 +114,13 @@ public class DragonController {
                             responseCode = "200",
                             description = "Дракон найден",
                             content = @Content(
-                                    mediaType = MediaType.APPLICATION_XML_VALUE,
+                                    mediaType = APPLICATION_XML_VALUE,
                                     schema = @Schema(implementation = DragonResponseDto.class))),
                     @ApiResponse(
                             responseCode = "400",
                             description = "Неверный формат запроса",
                             content = @Content(
-                                    mediaType = MediaType.APPLICATION_XML_VALUE,
+                                    mediaType = APPLICATION_XML_VALUE,
                                     schema = @Schema(implementation = ApiErrorResponse.class),
                                     examples = @ExampleObject(
                                             value = """
@@ -135,7 +138,7 @@ public class DragonController {
                             responseCode = "404",
                             description = "Дракон с указанным ID не найден",
                             content = @Content(
-                                    mediaType = MediaType.APPLICATION_XML_VALUE,
+                                    mediaType = APPLICATION_XML_VALUE,
                                     schema = @Schema(implementation = ApiErrorResponse.class),
                                     examples = @ExampleObject(
                                             value = """
@@ -153,7 +156,7 @@ public class DragonController {
                             responseCode = "500",
                             description = "Внутренняя ошибка сервера",
                             content = @Content(
-                                    mediaType = MediaType.APPLICATION_XML_VALUE,
+                                    mediaType = APPLICATION_XML_VALUE,
                                     schema = @Schema(implementation = ApiErrorResponse.class),
                                     examples = @ExampleObject(
                                             value = """
@@ -173,7 +176,7 @@ public class DragonController {
         return ResponseEntity.ok(new DragonResponseDto());
     }
 
-    @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_XML_VALUE, consumes = MediaType.APPLICATION_XML_VALUE)
+    @PutMapping(value = "/{id}", produces = APPLICATION_XML_VALUE, consumes = APPLICATION_XML_VALUE)
     @Operation(
             summary = "Обновить дракона по ID",
             description = "Полностью заменяет данные дракона новыми. ID и дата создания остаются прежними.",
@@ -181,13 +184,13 @@ public class DragonController {
                     @ApiResponse(responseCode = "200",
                             description = "Дракон обновлён",
                             content = @Content(
-                                    mediaType = MediaType.APPLICATION_XML_VALUE,
+                                    mediaType = APPLICATION_XML_VALUE,
                                     schema = @Schema(implementation = DragonResponseDto.class))),
                     @ApiResponse(
                             responseCode = "400",
                             description = "Неверный формат запроса",
                             content = @Content(
-                                    mediaType = MediaType.APPLICATION_XML_VALUE,
+                                    mediaType = APPLICATION_XML_VALUE,
                                     schema = @Schema(implementation = ApiErrorResponse.class),
                                     examples = @ExampleObject(
                                             value = """
@@ -205,7 +208,7 @@ public class DragonController {
                             responseCode = "404",
                             description = "Дракон с указанным ID не найден",
                             content = @Content(
-                                    mediaType = MediaType.APPLICATION_XML_VALUE,
+                                    mediaType = APPLICATION_XML_VALUE,
                                     schema = @Schema(implementation = ApiErrorResponse.class),
                                     examples = @ExampleObject(
                                             value = """
@@ -221,7 +224,7 @@ public class DragonController {
                                     ))),
                     @ApiResponse(responseCode = "422",
                             description = "Неверные входные данные (например, пустое имя или age <= 0)",
-                            content = @Content(mediaType = MediaType.APPLICATION_XML_VALUE,
+                            content = @Content(mediaType = APPLICATION_XML_VALUE,
                                     schema = @Schema(implementation = ApiErrorResponse.class),
                                     examples = @ExampleObject(
                                             value = """
@@ -238,7 +241,7 @@ public class DragonController {
                     @ApiResponse(responseCode = "500",
                             description = "Внутренняя ошибка сервера",
                             content = @Content(
-                                    mediaType = MediaType.APPLICATION_XML_VALUE,
+                                    mediaType = APPLICATION_XML_VALUE,
                                     schema = @Schema(implementation = ApiErrorResponse.class),
                                     examples = @ExampleObject(
                                             value = """
@@ -271,7 +274,7 @@ public class DragonController {
                             responseCode = "400",
                             description = "Неверный формат запроса",
                             content = @Content(
-                                    mediaType = MediaType.APPLICATION_XML_VALUE,
+                                    mediaType = APPLICATION_XML_VALUE,
                                     schema = @Schema(implementation = ApiErrorResponse.class),
                                     examples = @ExampleObject(
                                             value = """
@@ -289,7 +292,7 @@ public class DragonController {
                             responseCode = "404",
                             description = "Дракон не найден",
                             content = @Content(
-                                    mediaType = MediaType.APPLICATION_XML_VALUE,
+                                    mediaType = APPLICATION_XML_VALUE,
                                     schema = @Schema(implementation = ApiErrorResponse.class),
                                     examples = @ExampleObject(
                                             value = """
@@ -307,7 +310,7 @@ public class DragonController {
                             responseCode = "500",
                             description = "Внутренняя ошибка сервера",
                             content = @Content(
-                                    mediaType = MediaType.APPLICATION_XML_VALUE,
+                                    mediaType = APPLICATION_XML_VALUE,
                                     schema = @Schema(implementation = ApiErrorResponse.class),
                                     examples = @ExampleObject(
                                             value = """
@@ -327,13 +330,13 @@ public class DragonController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_XML_VALUE)
+    @PostMapping(value = "/search", consumes = APPLICATION_XML_VALUE, produces = APPLICATION_XML_VALUE)
     @Operation(
             summary = "Получить список драконов",
             description = """
                 Возвращает страницу драконов с возможностью фильтрации и сортировки.
 
-                **Фильтрация**: передаётся в виде query-параметров (например: `?name=Drakon&type=FIRE`).
+                **Фильтрация**: передаётся в виде объекта фильтра в теле запроса.
 
                 **Пагинация и сортировка**: используются стандартные параметры Spring Data:
                 - `page` — номер страницы (0 по умолчанию)
@@ -345,26 +348,56 @@ public class DragonController {
                             responseCode = "200",
                             description = "Страница драконов найдена",
                             content = @Content(
-                                    mediaType = MediaType.APPLICATION_XML_VALUE,
+                                    mediaType = APPLICATION_XML_VALUE,
                                     schema = @Schema(implementation = PagedDragonListDto.class))),
                     @ApiResponse(
                             responseCode = "400",
-                            description = "Некорректный формат запроса или параметры фильтрации/сортировки/пагинации",
+                            description = "Некорректный формат запроса или параметры сортировки/пагинации",
                             content = @Content(
-                                    mediaType = MediaType.APPLICATION_XML_VALUE,
-                                    schema = @Schema(implementation = ApiErrorResponse.class))),
+                                    mediaType = APPLICATION_XML_VALUE,
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            value = """
+                                                <error>
+                                                  <status>BAD_REQUEST</status>
+                                                  <timestamp>2025-09-14T12:00:54.8718241</timestamp>
+                                                  <path>/soa/api/v1/dragon/search</path>
+                                                  <messages>
+                                                    <message>JSON parse error</message>
+                                                  </messages>
+                                                </error>
+                                                """
+                                    ))),
+                    @ApiResponse(
+                            responseCode = "422",
+                            description = "Некорректный формат запроса или параметры фильтрации",
+                            content = @Content(
+                                    mediaType = APPLICATION_XML_VALUE,
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            value = """
+                                                <error>
+                                                  <status>UNPROCESSABLE_ENTITY</status>
+                                                  <timestamp>2025-09-14T15:29:35.4584707</timestamp>
+                                                  <path>/soa/api/v1/dragon/search</path>
+                                                  <messages>
+                                                    <message>Failed to convert param with value 'E' to type: 'FilterOperation'</message>
+                                                  </messages>
+                                                </error>
+                                                """
+                                    ))),
                     @ApiResponse(
                             responseCode = "500",
                             description = "Внутренняя ошибка сервера",
                             content = @Content(
-                                    mediaType = MediaType.APPLICATION_XML_VALUE,
+                                    mediaType = APPLICATION_XML_VALUE,
                                     schema = @Schema(implementation = ApiErrorResponse.class),
                                     examples = @ExampleObject(
                                             value = """
                                                 <error>
                                                   <status>INTERNAL_SERVER_ERROR</status>
                                                   <timestamp>2025-09-14T12:00:54.8718241</timestamp>
-                                                  <path>/soa/api/v1/dragon</path>
+                                                  <path>/soa/api/v1/dragon/search</path>
                                                   <messages>
                                                     <message>Internal Server Error</message>
                                                   </messages>
@@ -373,20 +406,15 @@ public class DragonController {
                                     )))
             }
     )
-    public ResponseEntity<PagedDragonListDto> getAll(
-            @Parameter(description = "Фильтры по полям (например: name=Drakon&type=FIRE)")
-            @RequestParam(required = false) Map<String, String> filters,
-            @ParameterObject Pageable pageable
-    ) {
-        List<DragonResponseDto> dragons = List.of(new DragonResponseDto(), new DragonResponseDto());
-        long total = 2L;
+    public ResponseEntity<PagedDragonListDto> search(
+            @RequestBody(required = false) @Valid FilterRequestDto filter,
+            @ParameterObject @Valid @PageableDefault @PageableEntity(entityClass = Dragon.class) Pageable pageable) {
+        PagedDragonListDto page = dragonService.search(filter, pageable);
 
-        PagedDragonListDto response = new PagedDragonListDto(dragons, pageable.getPageNumber(), pageable.getPageSize(), total);
-
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(page);
     }
 
-    @GetMapping(value = "/name/min", produces = MediaType.APPLICATION_XML_VALUE)
+    @GetMapping(value = "/name/min", produces = APPLICATION_XML_VALUE)
     @Operation(
             summary = "Найти дракона с минимальным именем",
             description = "Возвращает одного дракона, у которого поле `name` является лексикографически минимальным.",
@@ -395,7 +423,7 @@ public class DragonController {
                             responseCode = "200",
                             description = "Дракон найден",
                             content = @Content(
-                                    mediaType = MediaType.APPLICATION_XML_VALUE,
+                                    mediaType = APPLICATION_XML_VALUE,
                                     schema = @Schema(implementation = DragonResponseDto.class))),
                     @ApiResponse(
                             responseCode = "204",
@@ -405,7 +433,7 @@ public class DragonController {
                             responseCode = "500",
                             description = "Внутренняя ошибка сервера",
                             content = @Content(
-                                    mediaType = MediaType.APPLICATION_XML_VALUE,
+                                    mediaType = APPLICATION_XML_VALUE,
                                     schema = @Schema(implementation = ApiErrorResponse.class),
                                     examples = @ExampleObject(
                                             value = """
@@ -425,7 +453,7 @@ public class DragonController {
         return ResponseEntity.ok(new DragonResponseDto());
     }
 
-    @GetMapping(value = "/type/count", produces = MediaType.APPLICATION_XML_VALUE)
+    @GetMapping(value = "/type/count", produces = APPLICATION_XML_VALUE)
     @Operation(
             summary = "Группировка по типу",
             description = "Считает количество драконов для каждого значения поля `type`.",
@@ -434,13 +462,13 @@ public class DragonController {
                             responseCode = "200",
                             description = "Результат группировки",
                             content = @Content(
-                                    mediaType = MediaType.APPLICATION_XML_VALUE,
+                                    mediaType = APPLICATION_XML_VALUE,
                                     schema = @Schema(implementation = DragonTypeCountListDto.class))),
                     @ApiResponse(
                             responseCode = "500",
                             description = "Внутренняя ошибка сервера",
                             content = @Content(
-                                    mediaType = MediaType.APPLICATION_XML_VALUE,
+                                    mediaType = APPLICATION_XML_VALUE,
                                     schema = @Schema(implementation = ApiErrorResponse.class),
                                     examples = @ExampleObject(
                                             value = """
@@ -464,7 +492,7 @@ public class DragonController {
                         )));
     }
 
-    @GetMapping(value = "/type/count/greater", produces = MediaType.APPLICATION_XML_VALUE)
+    @GetMapping(value = "/type/count/greater", produces = APPLICATION_XML_VALUE)
     @Operation(
             summary = "Подсчитать количество драконов с типом больше заданного",
             description = "Считает количество элементов, у которых `type` лексикографически больше переданного значения.",
@@ -473,7 +501,7 @@ public class DragonController {
                             responseCode = "200",
                             description = "Количество найдено",
                             content = @Content(
-                                    mediaType = MediaType.APPLICATION_XML_VALUE,
+                                    mediaType = APPLICATION_XML_VALUE,
                                     schema = @Schema(implementation = ApiNumberResponse.class))),
                     @ApiResponse(
                             responseCode = "204",
@@ -483,7 +511,7 @@ public class DragonController {
                             responseCode = "400",
                             description = "Неверный формат запроса или некорректное значение параметра type",
                             content = @Content(
-                                    mediaType = MediaType.APPLICATION_XML_VALUE,
+                                    mediaType = APPLICATION_XML_VALUE,
                                     schema = @Schema(implementation = ApiErrorResponse.class),
                                     examples = @ExampleObject(
                                             value = """
@@ -501,7 +529,7 @@ public class DragonController {
                             responseCode = "500",
                             description = "Внутренняя ошибка сервера",
                             content = @Content(
-                                    mediaType = MediaType.APPLICATION_XML_VALUE,
+                                    mediaType = APPLICATION_XML_VALUE,
                                     schema = @Schema(implementation = ApiErrorResponse.class),
                                     examples = @ExampleObject(
                                             value = """

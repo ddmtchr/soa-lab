@@ -1,7 +1,11 @@
 package com.ddmtchr.soalab.controller;
 
 import com.ddmtchr.soalab.dto.api.ApiErrorResponse;
+import com.ddmtchr.soalab.exception.FilterValidationException;
 import com.ddmtchr.soalab.exception.NotFoundException;
+import com.ddmtchr.soalab.exception.PageableValidationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.TypeMismatchException;
@@ -26,6 +30,17 @@ import java.util.stream.Collectors;
 @Slf4j
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
+    @ExceptionHandler(PageableValidationException.class)
+    public ResponseEntity<Object> handlePageableValidationException(PageableValidationException ex, HttpServletRequest request) {
+        log.warn(ex.getMessage(), ex);
+        return buildResponseEntity(HttpStatus.BAD_REQUEST, LocalDateTime.now(), request, List.of(ex.getMessage()));
+    }
+
+    @ExceptionHandler(FilterValidationException.class)
+    public ResponseEntity<Object> handleFilterValidationException(FilterValidationException ex, HttpServletRequest request) {
+        log.warn(ex.getMessage(), ex);
+        return buildResponseEntity(HttpStatus.BAD_REQUEST, LocalDateTime.now(), request, List.of(ex.getMessage()));
+    }
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<Object> handleNotFoundException(NotFoundException ex, HttpServletRequest request) {
@@ -50,7 +65,18 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
         HttpServletRequest servletRequest = ((ServletWebRequest) request).getRequest();
 
+        Throwable cause = ex.getCause();
+        if (cause instanceof InvalidFormatException ife) {
+
+            Object[] args = {ife.getValue(), ife.getTargetType().getSimpleName()};
+            String message = "Failed to convert param with value '" + args[0] + "' to type: '" + args[1] + "'";
+
+            return buildResponseEntity(HttpStatus.UNPROCESSABLE_ENTITY, LocalDateTime.now(), servletRequest, List.of(message));
+        } else if (cause instanceof JsonMappingException) {
+            return buildResponseEntity(HttpStatus.BAD_REQUEST, LocalDateTime.now(), servletRequest, List.of(ex.getMessage()));
+        }
         return buildResponseEntity(HttpStatus.BAD_REQUEST, LocalDateTime.now(), servletRequest, List.of(ex.getMessage()));
+
     }
 
     @Override
