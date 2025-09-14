@@ -7,6 +7,7 @@ import com.ddmtchr.soalab.service.DragonService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -46,25 +47,55 @@ public class DragonController {
                             description = "Неверный формат запроса",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_XML_VALUE,
-                                    schema = @Schema(implementation = ApiErrorResponse.class))),
-                    @ApiResponse(
-                            responseCode = "409",
-                            description = "Конфликт — дракон с таким id уже существует",
-                            content = @Content(
-                                    mediaType = MediaType.APPLICATION_XML_VALUE,
-                                    schema = @Schema(implementation = ApiErrorResponse.class))),
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            value = """
+                                                <error>
+                                                  <status>BAD_REQUEST</status>
+                                                  <timestamp>2025-09-14T11:58:48.0675202</timestamp>
+                                                  <path>/soa/api/v1/dragon</path>
+                                                  <messages>
+                                                    <message>JSON parse error</message>
+                                                  </messages>
+                                                </error>
+                                                """
+                                    ))),
                     @ApiResponse(
                             responseCode = "422",
                             description = "Неверные входные данные (например, пустое имя или age <= 0)",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_XML_VALUE,
-                                    schema = @Schema(implementation = ApiErrorResponse.class))),
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            value = """
+                                                <error>
+                                                  <status>UNPROCESSABLE_ENTITY</status>
+                                                  <timestamp>2025-09-13T14:55:27.6973344</timestamp>
+                                                  <path>/soa/api/v1/dragon</path>
+                                                  <messages>
+                                                      <message>Field 'age': должно быть не меньше 1</message>
+                                                  </messages>
+                                                </error>
+                                                """
+                                    ))),
                     @ApiResponse(
                             responseCode = "500",
                             description = "Внутренняя ошибка сервера",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_XML_VALUE,
-                                    schema = @Schema(implementation = ApiErrorResponse.class)))
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            value = """
+                                                <error>
+                                                  <status>INTERNAL_SERVER_ERROR</status>
+                                                  <timestamp>2025-09-14T12:00:54.8718241</timestamp>
+                                                  <path>/soa/api/v1/dragon</path>
+                                                  <messages>
+                                                    <message>Internal Server Error</message>
+                                                  </messages>
+                                                </error>
+                                                """
+                                    )))
             }
     )
     public ResponseEntity<DragonResponseDto> create(@RequestBody @Valid DragonRequestDto dto) {
@@ -87,22 +118,58 @@ public class DragonController {
                             description = "Неверный формат запроса",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_XML_VALUE,
-                                    schema = @Schema(implementation = ApiErrorResponse.class))),
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            value = """
+                                                <error>
+                                                  <status>BAD_REQUEST</status>
+                                                  <timestamp>2025-09-14T11:58:48.0675202</timestamp>
+                                                  <path>/soa/api/v1/dragon/1</path>
+                                                  <messages>
+                                                    <message>JSON parse error</message>
+                                                  </messages>
+                                                </error>
+                                                """
+                                    ))),
                     @ApiResponse(
                             responseCode = "404",
                             description = "Дракон с указанным ID не найден",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_XML_VALUE,
-                                    schema = @Schema(implementation = ApiErrorResponse.class))),
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            value = """
+                                                <error>
+                                                  <status>NOT_FOUND</status>
+                                                  <timestamp>2025-09-14T11:58:48.0675202</timestamp>
+                                                  <path>/soa/api/v1/dragon/1</path>
+                                                  <messages>
+                                                    <message>Dragon not found</message>
+                                                  </messages>
+                                                </error>
+                                                """
+                                    ))),
                     @ApiResponse(
                             responseCode = "500",
                             description = "Внутренняя ошибка сервера",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_XML_VALUE,
-                                    schema = @Schema(implementation = ApiErrorResponse.class)))
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            value = """
+                                                <error>
+                                                  <status>INTERNAL_SERVER_ERROR</status>
+                                                  <timestamp>2025-09-14T12:00:54.8718241</timestamp>
+                                                  <path>/soa/api/v1/dragon/1</path>
+                                                  <messages>
+                                                    <message>Internal Server Error</message>
+                                                  </messages>
+                                                </error>
+                                                """
+                                    )))
             }
     )
-    public ResponseEntity<DragonResponseDto> getById(@PathVariable Long id) {
+    public ResponseEntity<DragonResponseDto> getById(@PathVariable @Valid Long id) {
         return ResponseEntity.ok(new DragonResponseDto());
     }
 
@@ -116,26 +183,78 @@ public class DragonController {
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_XML_VALUE,
                                     schema = @Schema(implementation = DragonResponseDto.class))),
-                    @ApiResponse(responseCode = "400",
+                    @ApiResponse(
+                            responseCode = "400",
                             description = "Неверный формат запроса",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_XML_VALUE,
-                                    schema = @Schema(implementation = ApiErrorResponse.class))),
-                    @ApiResponse(responseCode = "404",
-                            description = "Дракон с таким ID не найден",
-                            content = @Content(mediaType = MediaType.APPLICATION_XML_VALUE,
-                                    schema = @Schema(implementation = ApiErrorResponse.class))),
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            value = """
+                                                <error>
+                                                  <status>BAD_REQUEST</status>
+                                                  <timestamp>2025-09-14T11:58:48.0675202</timestamp>
+                                                  <path>/soa/api/v1/dragon/1</path>
+                                                  <messages>
+                                                    <message>JSON parse error</message>
+                                                  </messages>
+                                                </error>
+                                                """
+                                    ))),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Дракон с указанным ID не найден",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_XML_VALUE,
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            value = """
+                                                <error>
+                                                  <status>NOT_FOUND</status>
+                                                  <timestamp>2025-09-14T11:58:48.0675202</timestamp>
+                                                  <path>/soa/api/v1/dragon/1</path>
+                                                  <messages>
+                                                    <message>Dragon not found</message>
+                                                  </messages>
+                                                </error>
+                                                """
+                                    ))),
                     @ApiResponse(responseCode = "422",
                             description = "Неверные входные данные (например, пустое имя или age <= 0)",
                             content = @Content(mediaType = MediaType.APPLICATION_XML_VALUE,
-                                    schema = @Schema(implementation = ApiErrorResponse.class))),
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            value = """
+                                                <error>
+                                                  <status>UNPROCESSABLE_ENTITY</status>
+                                                  <timestamp>2025-09-13T14:55:27.6973344</timestamp>
+                                                  <path>/soa/api/v1/dragon/1</path>
+                                                  <messages>
+                                                      <message>Field 'age': должно быть не меньше 1</message>
+                                                  </messages>
+                                                </error>
+                                                """
+                                    ))),
                     @ApiResponse(responseCode = "500",
                             description = "Внутренняя ошибка сервера",
-                            content = @Content(mediaType = MediaType.APPLICATION_XML_VALUE,
-                                    schema = @Schema(implementation = ApiErrorResponse.class)))
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_XML_VALUE,
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            value = """
+                                                <error>
+                                                  <status>INTERNAL_SERVER_ERROR</status>
+                                                  <timestamp>2025-09-14T12:00:54.8718241</timestamp>
+                                                  <path>/soa/api/v1/dragon/1</path>
+                                                  <messages>
+                                                    <message>Internal Server Error</message>
+                                                  </messages>
+                                                </error>
+                                                """
+                                    )))
             }
     )
-    public ResponseEntity<DragonResponseDto> update(@PathVariable Long id, @RequestBody @Valid DragonRequestDto dto) {
+    public ResponseEntity<DragonResponseDto> update(@PathVariable @Valid Long id, @RequestBody @Valid DragonRequestDto dto) {
         return ResponseEntity.ok(new DragonResponseDto());
     }
 
@@ -151,21 +270,60 @@ public class DragonController {
                     @ApiResponse(
                             responseCode = "400",
                             description = "Неверный формат запроса",
-                            content = @Content(mediaType = MediaType.APPLICATION_XML_VALUE,
-                                    schema = @Schema(implementation = ApiErrorResponse.class))),
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_XML_VALUE,
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            value = """
+                                                <error>
+                                                  <status>BAD_REQUEST</status>
+                                                  <timestamp>2025-09-14T11:58:48.0675202</timestamp>
+                                                  <path>/soa/api/v1/dragon/1</path>
+                                                  <messages>
+                                                    <message>JSON parse error</message>
+                                                  </messages>
+                                                </error>
+                                                """
+                                    ))),
                     @ApiResponse(
                             responseCode = "404",
                             description = "Дракон не найден",
-                            content = @Content(mediaType = MediaType.APPLICATION_XML_VALUE,
-                                    schema = @Schema(implementation = ApiErrorResponse.class))),
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_XML_VALUE,
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            value = """
+                                                <error>
+                                                  <status>NOT_FOUND</status>
+                                                  <timestamp>2025-09-14T11:58:48.0675202</timestamp>
+                                                  <path>/soa/api/v1/dragon/1</path>
+                                                  <messages>
+                                                    <message>Dragon not found</message>
+                                                  </messages>
+                                                </error>
+                                                """
+                                    ))),
                     @ApiResponse(
                             responseCode = "500",
                             description = "Внутренняя ошибка сервера",
-                            content = @Content(mediaType = MediaType.APPLICATION_XML_VALUE,
-                                    schema = @Schema(implementation = ApiErrorResponse.class)))
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_XML_VALUE,
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            value = """
+                                                <error>
+                                                  <status>INTERNAL_SERVER_ERROR</status>
+                                                  <timestamp>2025-09-14T12:00:54.8718241</timestamp>
+                                                  <path>/soa/api/v1/dragon/1</path>
+                                                  <messages>
+                                                    <message>Internal Server Error</message>
+                                                  </messages>
+                                                </error>
+                                                """
+                                    )))
             }
     )
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable @Valid Long id) {
         return ResponseEntity.noContent().build();
     }
 
@@ -189,16 +347,30 @@ public class DragonController {
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_XML_VALUE,
                                     schema = @Schema(implementation = PagedDragonListDto.class))),
-                    @ApiResponse(responseCode = "400",
+                    @ApiResponse(
+                            responseCode = "400",
                             description = "Некорректный формат запроса или параметры фильтрации/сортировки/пагинации",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_XML_VALUE,
                                     schema = @Schema(implementation = ApiErrorResponse.class))),
-                    @ApiResponse(responseCode = "500",
+                    @ApiResponse(
+                            responseCode = "500",
                             description = "Внутренняя ошибка сервера",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_XML_VALUE,
-                                    schema = @Schema(implementation = ApiErrorResponse.class)))
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            value = """
+                                                <error>
+                                                  <status>INTERNAL_SERVER_ERROR</status>
+                                                  <timestamp>2025-09-14T12:00:54.8718241</timestamp>
+                                                  <path>/soa/api/v1/dragon</path>
+                                                  <messages>
+                                                    <message>Internal Server Error</message>
+                                                  </messages>
+                                                </error>
+                                                """
+                                    )))
             }
     )
     public ResponseEntity<PagedDragonListDto> getAll(
@@ -219,19 +391,34 @@ public class DragonController {
             summary = "Найти дракона с минимальным именем",
             description = "Возвращает одного дракона, у которого поле `name` является лексикографически минимальным.",
             responses = {
-                    @ApiResponse(responseCode = "200",
+                    @ApiResponse(
+                            responseCode = "200",
                             description = "Дракон найден",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_XML_VALUE,
                                     schema = @Schema(implementation = DragonResponseDto.class))),
-                    @ApiResponse(responseCode = "204",
+                    @ApiResponse(
+                            responseCode = "204",
                             description = "Коллекция пуста, драконов нет",
                             content = @Content),
-                    @ApiResponse(responseCode = "500",
+                    @ApiResponse(
+                            responseCode = "500",
                             description = "Внутренняя ошибка сервера",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_XML_VALUE,
-                                    schema = @Schema(implementation = ApiErrorResponse.class)))
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            value = """
+                                                <error>
+                                                  <status>INTERNAL_SERVER_ERROR</status>
+                                                  <timestamp>2025-09-14T12:00:54.8718241</timestamp>
+                                                  <path>/soa/api/v1/dragon/name/min</path>
+                                                  <messages>
+                                                    <message>Internal Server Error</message>
+                                                  </messages>
+                                                </error>
+                                                """
+                                    )))
             }
     )
     public ResponseEntity<DragonResponseDto> getMinByName() {
@@ -252,15 +439,32 @@ public class DragonController {
                     @ApiResponse(
                             responseCode = "500",
                             description = "Внутренняя ошибка сервера",
-                            content = @Content(mediaType = MediaType.APPLICATION_XML_VALUE,
-                                    schema = @Schema(implementation = ApiErrorResponse.class)))
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_XML_VALUE,
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            value = """
+                                                <error>
+                                                  <status>INTERNAL_SERVER_ERROR</status>
+                                                  <timestamp>2025-09-14T12:00:54.8718241</timestamp>
+                                                  <path>/soa/api/v1/dragon/type/count</path>
+                                                  <messages>
+                                                    <message>Internal Server Error</message>
+                                                  </messages>
+                                                </error>
+                                                """
+                                    )))
             }
     )
     public ResponseEntity<DragonTypeCountListDto> countByType() {
-        return ResponseEntity.ok(new DragonTypeCountListDto(List.of(new DragonTypeCountDto(DragonType.AIR, 1L))));
+        return ResponseEntity.ok(new DragonTypeCountListDto(
+                List.of(
+                        new DragonTypeCountDto(DragonType.AIR, 1L),
+                        new DragonTypeCountDto(DragonType.FIRE, 3L)
+                        )));
     }
 
-    @GetMapping("/type/count/greater")
+    @GetMapping(value = "/type/count/greater", produces = MediaType.APPLICATION_XML_VALUE)
     @Operation(
             summary = "Подсчитать количество драконов с типом больше заданного",
             description = "Считает количество элементов, у которых `type` лексикографически больше переданного значения.",
@@ -280,16 +484,41 @@ public class DragonController {
                             description = "Неверный формат запроса или некорректное значение параметра type",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_XML_VALUE,
-                                    schema = @Schema(implementation = ApiErrorResponse.class))),
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            value = """
+                                                <error>
+                                                  <status>BAD_REQUEST</status>
+                                                  <timestamp>2025-09-14T11:58:48.0675202</timestamp>
+                                                  <path>/soa/api/v1/dragon/1</path>
+                                                  <messages>
+                                                    <message>Failed to convert param 'type' with value: 'NOPE'</message>
+                                                  </messages>
+                                                </error>
+                                                """
+                                    ))),
                     @ApiResponse(
                             responseCode = "500",
                             description = "Внутренняя ошибка сервера",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_XML_VALUE,
-                                    schema = @Schema(implementation = ApiErrorResponse.class)))
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            value = """
+                                                <error>
+                                                  <status>INTERNAL_SERVER_ERROR</status>
+                                                  <timestamp>2025-09-14T12:00:54.8718241</timestamp>
+                                                  <path>/soa/api/v1/dragon/type/count/greater</path>
+                                                  <messages>
+                                                    <message>Internal Server Error</message>
+                                                  </messages>
+                                                </error>
+                                                """
+                                    )))
             }
     )
-    public ResponseEntity<ApiNumberResponse> countByType(@RequestParam @Valid DragonType type) {
+    public ResponseEntity<ApiNumberResponse> countByTypeGreater(@RequestParam @Valid DragonType type) {
+//        throw new RuntimeException();
         return ResponseEntity.ok(new ApiNumberResponse(0L));
     }
 

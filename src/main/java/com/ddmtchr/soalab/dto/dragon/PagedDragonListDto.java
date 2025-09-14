@@ -3,10 +3,7 @@ package com.ddmtchr.soalab.dto.dragon;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,9 +21,10 @@ import java.util.List;
 public class PagedDragonListDto {
 
     @JacksonXmlProperty(localName = "dragon")
-    @JacksonXmlElementWrapper(useWrapping = false)
+    @JacksonXmlElementWrapper(localName = "content")
     @XmlElement(name = "dragon")
-    private List<DragonResponseDto> dragons;
+    @XmlElementWrapper(name = "content")
+    private List<DragonResponseDto> content;
 
     private int page;
     private int size;
