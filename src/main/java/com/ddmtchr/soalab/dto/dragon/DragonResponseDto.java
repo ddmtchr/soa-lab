@@ -1,7 +1,7 @@
 package com.ddmtchr.soalab.dto.dragon;
 
-import com.ddmtchr.soalab.dto.coordinates.CoordinatesDto;
-import com.ddmtchr.soalab.dto.person.PersonDto;
+import com.ddmtchr.soalab.dto.coordinates.CoordinatesResponseDto;
+import com.ddmtchr.soalab.dto.person.PersonResponseDto;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -20,6 +20,7 @@ import java.time.ZonedDateTime;
 @Data
 public class DragonResponseDto {
 
+    @NotNull
     @Min(1)
     private Long id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
 
@@ -27,7 +28,7 @@ public class DragonResponseDto {
     private String name; //Поле не может быть null, Строка не может быть пустой
 
     @NotNull
-    private CoordinatesDto coordinates; //Поле не может быть null
+    private CoordinatesResponseDto coordinates; //Поле не может быть null
 
     private ZonedDateTime creationDate = ZonedDateTime.now(); //Поле не может быть null, Значение этого поля должно генерироваться автоматически
 
@@ -43,5 +44,5 @@ public class DragonResponseDto {
     @NotNull
     private DragonType type; //Поле не может быть null
 
-    private PersonDto killer; //Поле может быть null
+    private PersonResponseDto killer; //Поле может быть null
 }

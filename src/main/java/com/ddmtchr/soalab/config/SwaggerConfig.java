@@ -15,16 +15,16 @@ public class SwaggerConfig {
     @Bean
     public GroupedOpenApi dragonsApi() {
         return GroupedOpenApi.builder()
-                .group("Dragons")
-                .pathsToMatch("/api/v1/dragon/**")
+                .group("Dragons & Caves")
+                .pathsToMatch("/api/v1/dragon/**", "/api/v1/cave/**")
                 .addOpenApiCustomizer(openApi -> {
                             Server server = new Server();
                             server.setUrl("http://localhost:9876/soa");
-                            server.setDescription("Dragons server");
+                            server.setDescription("Dragons and caves server");
                             openApi.servers(List.of(server))
                                     .info(new Info()
-                                            .title("Dragons API")
-                                            .description("Dragons API documentation")
+                                            .title("Dragons & Caves API")
+                                            .description("Dragons & Caves API documentation")
                                             .version("1.0"));
                         }
                 )
@@ -34,16 +34,16 @@ public class SwaggerConfig {
     @Bean
     public GroupedOpenApi killersApi() {
         return GroupedOpenApi.builder()
-                .group("Killers")
-                .pathsToMatch("/api/v1/killer/**")
+                .group("Persons & Teams")
+                .pathsToMatch("/api/v1/killer/**", "/api/v1/person/**", "/api/v1/team/**")
                 .addOpenApiCustomizer(openApi -> {
                     Server server = new Server();
                     server.setUrl("http://localhost:9877/soa");
-                    server.setDescription("Killers server");
+                    server.setDescription("Persons and teams server");
                     openApi.servers(List.of(server))
                             .info(new Info()
-                                    .title("Killers API")
-                                    .description("Killers API documentation")
+                                    .title("Persons & Teams API")
+                                    .description("Persons & Teams API documentation")
                                     .version("1.0"));
                 })
                 .build();

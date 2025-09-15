@@ -19,6 +19,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .defaultContentTypeStrategy(webRequest ->
                         List.of(MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON));
     }
+
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(new ValidatingPageableResolver());

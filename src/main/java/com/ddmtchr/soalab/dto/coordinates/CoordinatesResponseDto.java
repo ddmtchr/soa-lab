@@ -13,8 +13,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class CoordinatesDto {
+public class CoordinatesResponseDto {
 
+    @NotNull
     private Long id;
 
     @Max(135)

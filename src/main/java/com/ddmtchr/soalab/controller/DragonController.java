@@ -181,7 +181,8 @@ public class DragonController {
             summary = "Обновить дракона по ID",
             description = "Полностью заменяет данные дракона новыми. ID и дата создания остаются прежними.",
             responses = {
-                    @ApiResponse(responseCode = "200",
+                    @ApiResponse(
+                            responseCode = "200",
                             description = "Дракон обновлён",
                             content = @Content(
                                     mediaType = APPLICATION_XML_VALUE,
@@ -222,7 +223,8 @@ public class DragonController {
                                                 </error>
                                                 """
                                     ))),
-                    @ApiResponse(responseCode = "422",
+                    @ApiResponse(
+                            responseCode = "422",
                             description = "Неверные входные данные (например, пустое имя или age <= 0)",
                             content = @Content(mediaType = APPLICATION_XML_VALUE,
                                     schema = @Schema(implementation = ApiErrorResponse.class),
@@ -238,7 +240,8 @@ public class DragonController {
                                                 </error>
                                                 """
                                     ))),
-                    @ApiResponse(responseCode = "500",
+                    @ApiResponse(
+                            responseCode = "500",
                             description = "Внутренняя ошибка сервера",
                             content = @Content(
                                     mediaType = APPLICATION_XML_VALUE,
@@ -261,7 +264,7 @@ public class DragonController {
         return ResponseEntity.ok(new DragonResponseDto());
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(value = "/{id}", produces = APPLICATION_XML_VALUE)
     @Operation(
             summary = "Удалить дракона по ID",
             description = "Удаляет дракона из коллекции по идентификатору.",
