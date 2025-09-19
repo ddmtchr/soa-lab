@@ -22,7 +22,7 @@ import static org.springframework.http.MediaType.APPLICATION_XML_VALUE;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "/api/v1/person")
+@RequestMapping(path = "/persons")
 @Tag(name = "Person API", description = "Люди")
 public class PersonController {
 

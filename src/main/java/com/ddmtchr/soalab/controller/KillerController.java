@@ -17,7 +17,7 @@ import static org.springframework.http.MediaType.APPLICATION_XML_VALUE;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/api/v1/killer")
+@RequestMapping(value = "/killer")
 @Tag(name = "Killer API", description = "Дополнительные операции с убийцами драконов")
 public class KillerController {
 

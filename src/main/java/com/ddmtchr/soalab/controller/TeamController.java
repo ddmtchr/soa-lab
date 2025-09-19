@@ -23,7 +23,7 @@ import static org.springframework.http.MediaType.APPLICATION_XML_VALUE;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "/api/v1/team")
+@RequestMapping(path = "/teams")
 @Tag(name = "Team API", description = "Команды")
 public class TeamController {
 

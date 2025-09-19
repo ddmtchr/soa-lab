@@ -28,7 +28,7 @@ import static org.springframework.http.MediaType.APPLICATION_XML_VALUE;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "/api/v1/dragon")
+@RequestMapping(path = "/dragons")
 @Tag(name = "Dragon API", description = "Управление коллекцией драконов")
 public class DragonController {
 

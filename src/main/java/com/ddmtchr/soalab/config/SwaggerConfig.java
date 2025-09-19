@@ -16,10 +16,10 @@ public class SwaggerConfig {
     public GroupedOpenApi dragonsApi() {
         return GroupedOpenApi.builder()
                 .group("Dragons & Caves")
-                .pathsToMatch("/api/v1/dragon/**", "/api/v1/cave/**")
+                .pathsToMatch("/dragons/**", "/caves/**")
                 .addOpenApiCustomizer(openApi -> {
                             Server server = new Server();
-                            server.setUrl("http://localhost:9876/soa");
+                            server.setUrl("http://localhost:9876/soa/api/v1");
                             server.setDescription("Dragons and caves server");
                             openApi.servers(List.of(server))
                                     .info(new Info()
@@ -35,10 +35,10 @@ public class SwaggerConfig {
     public GroupedOpenApi killersApi() {
         return GroupedOpenApi.builder()
                 .group("Persons & Teams")
-                .pathsToMatch("/api/v1/killer/**", "/api/v1/person/**", "/api/v1/team/**")
+                .pathsToMatch("/killer/**", "/persons/**", "/teams/**")
                 .addOpenApiCustomizer(openApi -> {
                     Server server = new Server();
-                    server.setUrl("http://localhost:9877/soa");
+                    server.setUrl("http://localhost:9877/soa/api/v1");
                     server.setDescription("Persons and teams server");
                     openApi.servers(List.of(server))
                             .info(new Info()

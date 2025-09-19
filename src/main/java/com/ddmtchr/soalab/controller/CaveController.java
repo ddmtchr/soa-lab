@@ -22,7 +22,7 @@ import static org.springframework.http.MediaType.APPLICATION_XML_VALUE;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "/api/v1/cave")
+@RequestMapping(path = "/caves")
 @Tag(name = "Cave API", description = "Пещеры")
 public class CaveController {
 
