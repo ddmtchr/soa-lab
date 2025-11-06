@@ -27,7 +27,7 @@ public class Dragon {
     @NotBlank
     private String name; //Поле не может быть null, Строка не может быть пустой
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @NotNull
     private Coordinates coordinates; //Поле не может быть null
 

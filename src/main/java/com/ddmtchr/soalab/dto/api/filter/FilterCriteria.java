@@ -1,6 +1,7 @@
 package com.ddmtchr.soalab.dto.api.filter;
 
 import com.ddmtchr.soalab.dto.api.FilterOperation;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -9,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @JacksonXmlRootElement(localName = "filter")
 @XmlRootElement(name = "filter")
 @NoArgsConstructor

@@ -4,6 +4,7 @@ import com.ddmtchr.soalab.dto.api.ApiErrorResponse;
 import com.ddmtchr.soalab.dto.person.PersonListDto;
 import com.ddmtchr.soalab.dto.person.PersonRequestDto;
 import com.ddmtchr.soalab.dto.person.PersonResponseDto;
+import com.ddmtchr.soalab.service.dto.PersonDtoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -16,8 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 import static org.springframework.http.MediaType.APPLICATION_XML_VALUE;
 
 @RestController
@@ -25,6 +24,8 @@ import static org.springframework.http.MediaType.APPLICATION_XML_VALUE;
 @RequestMapping(path = "/persons")
 @Tag(name = "Person API", description = "Люди")
 public class PersonController {
+
+    private final PersonDtoService personService;
 
     @PostMapping(consumes = APPLICATION_XML_VALUE, produces = APPLICATION_XML_VALUE)
     @Operation(
@@ -48,7 +49,7 @@ public class PersonController {
                                                 <error>
                                                   <status>BAD_REQUEST</status>
                                                   <timestamp>2025-09-14T11:58:48.0675202</timestamp>
-                                                  <path>/soa/api/v1/person</path>
+                                                  <path>/soa/api/v1/persons</path>
                                                   <messages>
                                                     <message>JSON parse error</message>
                                                   </messages>
@@ -66,7 +67,7 @@ public class PersonController {
                                                 <error>
                                                   <status>UNPROCESSABLE_ENTITY</status>
                                                   <timestamp>2025-09-13T14:55:27.6973344</timestamp>
-                                                  <path>/soa/api/v1/person</path>
+                                                  <path>/soa/api/v1/persons</path>
                                                   <messages>
                                                       <message>Field 'name': должно быть заполнено</message>
                                                   </messages>
@@ -84,7 +85,7 @@ public class PersonController {
                                                 <error>
                                                   <status>INTERNAL_SERVER_ERROR</status>
                                                   <timestamp>2025-09-14T12:00:54.8718241</timestamp>
-                                                  <path>/soa/api/v1/person</path>
+                                                  <path>/soa/api/v1/persons</path>
                                                   <messages>
                                                     <message>Internal Server Error</message>
                                                   </messages>
@@ -94,7 +95,7 @@ public class PersonController {
             }
     )
     public ResponseEntity<PersonResponseDto> create(@RequestBody @Valid PersonRequestDto dto) {
-        return new ResponseEntity<>(new PersonResponseDto(), HttpStatus.CREATED);
+        return new ResponseEntity<>(personService.save(dto), HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/{id}", produces = APPLICATION_XML_VALUE)
@@ -119,7 +120,7 @@ public class PersonController {
                                                 <error>
                                                   <status>BAD_REQUEST</status>
                                                   <timestamp>2025-09-14T11:58:48.0675202</timestamp>
-                                                  <path>/soa/api/v1/person/1</path>
+                                                  <path>/soa/api/v1/persons/1</path>
                                                   <messages>
                                                     <message>JSON parse error</message>
                                                   </messages>
@@ -137,7 +138,7 @@ public class PersonController {
                                                 <error>
                                                   <status>NOT_FOUND</status>
                                                   <timestamp>2025-09-14T11:58:48.0675202</timestamp>
-                                                  <path>/soa/api/v1/person/1</path>
+                                                  <path>/soa/api/v1/persons/1</path>
                                                   <messages>
                                                     <message>Person not found</message>
                                                   </messages>
@@ -155,7 +156,7 @@ public class PersonController {
                                                 <error>
                                                   <status>INTERNAL_SERVER_ERROR</status>
                                                   <timestamp>2025-09-14T12:00:54.8718241</timestamp>
-                                                  <path>/soa/api/v1/person/1</path>
+                                                  <path>/soa/api/v1/persons/1</path>
                                                   <messages>
                                                     <message>Internal Server Error</message>
                                                   </messages>
@@ -165,7 +166,7 @@ public class PersonController {
             }
     )
     public ResponseEntity<PersonResponseDto> getById(@PathVariable @Valid Long id) {
-        return ResponseEntity.ok(new PersonResponseDto());
+        return ResponseEntity.ok(personService.findById(id));
     }
 
     @PutMapping(value = "/{id}", produces = APPLICATION_XML_VALUE, consumes = APPLICATION_XML_VALUE)
@@ -190,7 +191,7 @@ public class PersonController {
                                                 <error>
                                                   <status>BAD_REQUEST</status>
                                                   <timestamp>2025-09-14T11:58:48.0675202</timestamp>
-                                                  <path>/soa/api/v1/person/1</path>
+                                                  <path>/soa/api/v1/persons/1</path>
                                                   <messages>
                                                     <message>JSON parse error</message>
                                                   </messages>
@@ -208,7 +209,7 @@ public class PersonController {
                                                 <error>
                                                   <status>NOT_FOUND</status>
                                                   <timestamp>2025-09-14T11:58:48.0675202</timestamp>
-                                                  <path>/soa/api/v1/person/1</path>
+                                                  <path>/soa/api/v1/persons/1</path>
                                                   <messages>
                                                     <message>Person not found</message>
                                                   </messages>
@@ -225,7 +226,7 @@ public class PersonController {
                                                 <error>
                                                   <status>UNPROCESSABLE_ENTITY</status>
                                                   <timestamp>2025-09-13T14:55:27.6973344</timestamp>
-                                                  <path>/soa/api/v1/person/1</path>
+                                                  <path>/soa/api/v1/persons/1</path>
                                                   <messages>
                                                       <message>Field 'name': должно быть заполнено</message>
                                                   </messages>
@@ -243,7 +244,7 @@ public class PersonController {
                                                 <error>
                                                   <status>INTERNAL_SERVER_ERROR</status>
                                                   <timestamp>2025-09-14T12:00:54.8718241</timestamp>
-                                                  <path>/soa/api/v1/person/1</path>
+                                                  <path>/soa/api/v1/persons/1</path>
                                                   <messages>
                                                     <message>Internal Server Error</message>
                                                   </messages>
@@ -253,7 +254,7 @@ public class PersonController {
             }
     )
     public ResponseEntity<PersonResponseDto> update(@PathVariable @Valid Long id, @RequestBody @Valid PersonRequestDto dto) {
-        return ResponseEntity.ok(new PersonResponseDto());
+        return ResponseEntity.ok(personService.update(id, dto));
     }
 
     @DeleteMapping(value = "/{id}", produces = APPLICATION_XML_VALUE)
@@ -276,7 +277,7 @@ public class PersonController {
                                                 <error>
                                                   <status>BAD_REQUEST</status>
                                                   <timestamp>2025-09-14T11:58:48.0675202</timestamp>
-                                                  <path>/soa/api/v1/person/1</path>
+                                                  <path>/soa/api/v1/persons/1</path>
                                                   <messages>
                                                     <message>JSON parse error</message>
                                                   </messages>
@@ -294,7 +295,7 @@ public class PersonController {
                                                 <error>
                                                   <status>NOT_FOUND</status>
                                                   <timestamp>2025-09-14T11:58:48.0675202</timestamp>
-                                                  <path>/soa/api/v1/person/1</path>
+                                                  <path>/soa/api/v1/persons/1</path>
                                                   <messages>
                                                     <message>Person not found</message>
                                                   </messages>
@@ -312,7 +313,7 @@ public class PersonController {
                                                 <error>
                                                   <status>INTERNAL_SERVER_ERROR</status>
                                                   <timestamp>2025-09-14T12:00:54.8718241</timestamp>
-                                                  <path>/soa/api/v1/person/1</path>
+                                                  <path>/soa/api/v1/persons/1</path>
                                                   <messages>
                                                     <message>Internal Server Error</message>
                                                   </messages>
@@ -322,6 +323,7 @@ public class PersonController {
             }
     )
     public ResponseEntity<Void> delete(@PathVariable @Valid Long id) {
+        personService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
@@ -347,7 +349,7 @@ public class PersonController {
                                                 <error>
                                                   <status>INTERNAL_SERVER_ERROR</status>
                                                   <timestamp>2025-09-14T12:00:54.8718241</timestamp>
-                                                  <path>/soa/api/v1/person</path>
+                                                  <path>/soa/api/v1/persons</path>
                                                   <messages>
                                                     <message> Internal Server Error</message>
                                                   </messages>
@@ -357,9 +359,7 @@ public class PersonController {
             }
     )
     public ResponseEntity<PersonListDto> findAll() {
-        PersonListDto list = new PersonListDto(List.of(new PersonResponseDto()));
-
-        return ResponseEntity.ok(list);
+        return ResponseEntity.ok(new PersonListDto(personService.findAll()));
     }
 
 }

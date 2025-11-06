@@ -12,6 +12,12 @@ import java.util.List;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
+    private final ValidatingPageableResolver validatingPageableResolver;
+
+    public WebConfig(ValidatingPageableResolver validatingPageableResolver) {
+        this.validatingPageableResolver = validatingPageableResolver;
+    }
+
     @Override
     public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
         configurer
@@ -22,6 +28,16 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(new ValidatingPageableResolver());
+        resolvers.add(validatingPageableResolver);
     }
+
+//    @Bean
+//    public CommonsRequestLoggingFilter requestLoggingFilter() {
+//        CommonsRequestLoggingFilter loggingFilter = new CommonsRequestLoggingFilter();
+//        loggingFilter.setIncludeClientInfo(true);
+//        loggingFilter.setIncludeQueryString(true);
+//        loggingFilter.setIncludePayload(true);
+//        loggingFilter.setMaxPayloadLength(64000);
+//        return loggingFilter;
+//    }
 }

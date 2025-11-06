@@ -1,10 +1,10 @@
 package com.ddmtchr.soalab.controller;
 
 import com.ddmtchr.soalab.dto.api.ApiErrorResponse;
-import com.ddmtchr.soalab.dto.cave.CaveResponseDto;
 import com.ddmtchr.soalab.dto.team.TeamListDto;
 import com.ddmtchr.soalab.dto.team.TeamRequestDto;
 import com.ddmtchr.soalab.dto.team.TeamResponseDto;
+import com.ddmtchr.soalab.service.dto.TeamDtoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -17,8 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 import static org.springframework.http.MediaType.APPLICATION_XML_VALUE;
 
 @RestController
@@ -26,6 +24,8 @@ import static org.springframework.http.MediaType.APPLICATION_XML_VALUE;
 @RequestMapping(path = "/teams")
 @Tag(name = "Team API", description = "Команды")
 public class TeamController {
+
+    private final TeamDtoService teamService;
 
     @PostMapping(consumes = APPLICATION_XML_VALUE, produces = APPLICATION_XML_VALUE)
     @Operation(
@@ -49,7 +49,7 @@ public class TeamController {
                                                 <error>
                                                   <status>BAD_REQUEST</status>
                                                   <timestamp>2025-09-14T11:58:48.0675202</timestamp>
-                                                  <path>/soa/api/v1/team</path>
+                                                  <path>/soa/api/v1/teams</path>
                                                   <messages>
                                                     <message>JSON parse error</message>
                                                   </messages>
@@ -67,7 +67,7 @@ public class TeamController {
                                                 <error>
                                                   <status>UNPROCESSABLE_ENTITY</status>
                                                   <timestamp>2025-09-13T14:55:27.6973344</timestamp>
-                                                  <path>/soa/api/v1/team</path>
+                                                  <path>/soa/api/v1/teams</path>
                                                   <messages>
                                                       <message>Field 'name': должно быть заполнено</message>
                                                   </messages>
@@ -85,7 +85,7 @@ public class TeamController {
                                                 <error>
                                                   <status>INTERNAL_SERVER_ERROR</status>
                                                   <timestamp>2025-09-14T12:00:54.8718241</timestamp>
-                                                  <path>/soa/api/v1/team</path>
+                                                  <path>/soa/api/v1/teams</path>
                                                   <messages>
                                                     <message>Internal Server Error</message>
                                                   </messages>
@@ -95,7 +95,7 @@ public class TeamController {
             }
     )
     public ResponseEntity<TeamResponseDto> create(@RequestBody @Valid TeamRequestDto dto) {
-        return new ResponseEntity<>(new TeamResponseDto(), HttpStatus.CREATED);
+        return new ResponseEntity<>(teamService.save(dto), HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/{id}", produces = APPLICATION_XML_VALUE)
@@ -120,7 +120,7 @@ public class TeamController {
                                                 <error>
                                                   <status>BAD_REQUEST</status>
                                                   <timestamp>2025-09-14T11:58:48.0675202</timestamp>
-                                                  <path>/soa/api/v1/team/1</path>
+                                                  <path>/soa/api/v1/teams/1</path>
                                                   <messages>
                                                     <message>JSON parse error</message>
                                                   </messages>
@@ -138,7 +138,7 @@ public class TeamController {
                                                 <error>
                                                   <status>NOT_FOUND</status>
                                                   <timestamp>2025-09-14T11:58:48.0675202</timestamp>
-                                                  <path>/soa/api/v1/team/1</path>
+                                                  <path>/soa/api/v1/teams/1</path>
                                                   <messages>
                                                     <message>Team not found</message>
                                                   </messages>
@@ -156,7 +156,7 @@ public class TeamController {
                                                 <error>
                                                   <status>INTERNAL_SERVER_ERROR</status>
                                                   <timestamp>2025-09-14T12:00:54.8718241</timestamp>
-                                                  <path>/soa/api/v1/team/1</path>
+                                                  <path>/soa/api/v1/teams/1</path>
                                                   <messages>
                                                     <message>Internal Server Error</message>
                                                   </messages>
@@ -166,7 +166,7 @@ public class TeamController {
             }
     )
     public ResponseEntity<TeamResponseDto> getById(@PathVariable @Valid Long id) {
-        return ResponseEntity.ok(new TeamResponseDto());
+        return ResponseEntity.ok(teamService.findById(id));
     }
 
     @PutMapping(value = "/{id}", produces = APPLICATION_XML_VALUE, consumes = APPLICATION_XML_VALUE)
@@ -191,7 +191,7 @@ public class TeamController {
                                                 <error>
                                                   <status>BAD_REQUEST</status>
                                                   <timestamp>2025-09-14T11:58:48.0675202</timestamp>
-                                                  <path>/soa/api/v1/team/1</path>
+                                                  <path>/soa/api/v1/teams/1</path>
                                                   <messages>
                                                     <message>JSON parse error</message>
                                                   </messages>
@@ -209,7 +209,7 @@ public class TeamController {
                                                 <error>
                                                   <status>NOT_FOUND</status>
                                                   <timestamp>2025-09-14T11:58:48.0675202</timestamp>
-                                                  <path>/soa/api/v1/team/1</path>
+                                                  <path>/soa/api/v1/teams/1</path>
                                                   <messages>
                                                     <message>Team not found</message>
                                                   </messages>
@@ -226,7 +226,7 @@ public class TeamController {
                                                 <error>
                                                   <status>UNPROCESSABLE_ENTITY</status>
                                                   <timestamp>2025-09-13T14:55:27.6973344</timestamp>
-                                                  <path>/soa/api/v1/team/1</path>
+                                                  <path>/soa/api/v1/teams/1</path>
                                                   <messages>
                                                       <message>Field 'name': должно быть заполнено</message>
                                                   </messages>
@@ -244,7 +244,7 @@ public class TeamController {
                                                 <error>
                                                   <status>INTERNAL_SERVER_ERROR</status>
                                                   <timestamp>2025-09-14T12:00:54.8718241</timestamp>
-                                                  <path>/soa/api/v1/team/1</path>
+                                                  <path>/soa/api/v1/teams/1</path>
                                                   <messages>
                                                     <message>Internal Server Error</message>
                                                   </messages>
@@ -254,7 +254,7 @@ public class TeamController {
             }
     )
     public ResponseEntity<TeamResponseDto> update(@PathVariable @Valid Long id, @RequestBody @Valid TeamRequestDto dto) {
-        return ResponseEntity.ok(new TeamResponseDto());
+        return ResponseEntity.ok(teamService.update(id, dto));
     }
 
     @DeleteMapping(value = "/{id}", produces = APPLICATION_XML_VALUE)
@@ -277,7 +277,7 @@ public class TeamController {
                                                 <error>
                                                   <status>BAD_REQUEST</status>
                                                   <timestamp>2025-09-14T11:58:48.0675202</timestamp>
-                                                  <path>/soa/api/v1/team/1</path>
+                                                  <path>/soa/api/v1/teams/1</path>
                                                   <messages>
                                                     <message>JSON parse error</message>
                                                   </messages>
@@ -295,7 +295,7 @@ public class TeamController {
                                                 <error>
                                                   <status>NOT_FOUND</status>
                                                   <timestamp>2025-09-14T11:58:48.0675202</timestamp>
-                                                  <path>/soa/api/v1/team/1</path>
+                                                  <path>/soa/api/v1/teams/1</path>
                                                   <messages>
                                                     <message>Team not found</message>
                                                   </messages>
@@ -313,7 +313,7 @@ public class TeamController {
                                                 <error>
                                                   <status>INTERNAL_SERVER_ERROR</status>
                                                   <timestamp>2025-09-14T12:00:54.8718241</timestamp>
-                                                  <path>/soa/api/v1/team/1</path>
+                                                  <path>/soa/api/v1/teams/1</path>
                                                   <messages>
                                                     <message>Internal Server Error</message>
                                                   </messages>
@@ -323,6 +323,7 @@ public class TeamController {
             }
     )
     public ResponseEntity<Void> delete(@PathVariable @Valid Long id) {
+        teamService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
@@ -348,7 +349,7 @@ public class TeamController {
                                                 <error>
                                                   <status>INTERNAL_SERVER_ERROR</status>
                                                   <timestamp>2025-09-14T12:00:54.8718241</timestamp>
-                                                  <path>/soa/api/v1/team</path>
+                                                  <path>/soa/api/v1/teams</path>
                                                   <messages>
                                                     <message> Internal Server Error</message>
                                                   </messages>
@@ -358,8 +359,6 @@ public class TeamController {
             }
     )
     public ResponseEntity<TeamListDto> findAll() {
-        TeamListDto list = new TeamListDto(List.of(new TeamResponseDto(1L, "Name", new CaveResponseDto(2L, "name"))));
-
-        return ResponseEntity.ok(list);
+        return ResponseEntity.ok(new TeamListDto(teamService.findAll()));
     }
 }

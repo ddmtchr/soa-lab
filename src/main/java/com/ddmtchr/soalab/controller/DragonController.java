@@ -6,7 +6,7 @@ import com.ddmtchr.soalab.dto.api.ApiNumberResponse;
 import com.ddmtchr.soalab.dto.api.filter.FilterRequestDto;
 import com.ddmtchr.soalab.dto.dragon.*;
 import com.ddmtchr.soalab.entity.Dragon;
-import com.ddmtchr.soalab.service.DragonService;
+import com.ddmtchr.soalab.service.dto.DragonDtoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -32,7 +32,7 @@ import static org.springframework.http.MediaType.APPLICATION_XML_VALUE;
 @Tag(name = "Dragon API", description = "Управление коллекцией драконов")
 public class DragonController {
 
-    private final DragonService dragonService;
+    private final DragonDtoService dragonService;
 
     @PostMapping(consumes = APPLICATION_XML_VALUE, produces = APPLICATION_XML_VALUE)
     @Operation(
@@ -44,7 +44,40 @@ public class DragonController {
                             description = "Дракон успешно создан",
                             content = @Content(
                                     mediaType = APPLICATION_XML_VALUE,
-                                    schema = @Schema(implementation = DragonResponseDto.class))),
+                                    schema = @Schema(implementation = DragonResponseDto.class),
+                                    examples = @ExampleObject(
+                                            value = """
+                                                    <dragon>
+                                                        <id>1</id>
+                                                    	<name>string</name>
+                                                    	<coordinates>
+                                                    		<x>135</x>
+                                                    		<y>0.1</y>
+                                                    	</coordinates>
+                                                    	<creationDate>2025-10-30T14:55:51.179Z</creationDate>
+                                                    	<age>1</age>
+                                                    	<description>string</description>
+                                                    	<weight>1</weight>
+                                                    	<type>WATER</type>
+                                                    	<killer>
+                                                    		<id>0</id>
+                                                    		<name>string</name>
+                                                    		<birthday>2025-10-30</birthday>
+                                                    		<height>1</height>
+                                                    		<weight>0.1</weight>
+                                                    		<passportID>strings</passportID>
+                                                    		<team>
+                                                    			<id>0</id>
+                                                    			<name>string</name>
+                                                    			<cave>
+                                                    				<id>0</id>
+                                                    				<name>string</name>
+                                                    			</cave>
+                                                    		</team>
+                                                    	</killer>
+                                                    </dragon>
+                                                    """
+                                    ))),
                     @ApiResponse(
                             responseCode = "400",
                             description = "Неверный формат запроса",
@@ -56,7 +89,7 @@ public class DragonController {
                                                 <error>
                                                   <status>BAD_REQUEST</status>
                                                   <timestamp>2025-09-14T11:58:48.0675202</timestamp>
-                                                  <path>/soa/api/v1/dragon</path>
+                                                  <path>/soa/api/v1/dragons</path>
                                                   <messages>
                                                     <message>JSON parse error</message>
                                                   </messages>
@@ -74,7 +107,7 @@ public class DragonController {
                                                 <error>
                                                   <status>UNPROCESSABLE_ENTITY</status>
                                                   <timestamp>2025-09-13T14:55:27.6973344</timestamp>
-                                                  <path>/soa/api/v1/dragon</path>
+                                                  <path>/soa/api/v1/dragons</path>
                                                   <messages>
                                                       <message>Field 'age': должно быть не меньше 1</message>
                                                   </messages>
@@ -92,7 +125,7 @@ public class DragonController {
                                                 <error>
                                                   <status>INTERNAL_SERVER_ERROR</status>
                                                   <timestamp>2025-09-14T12:00:54.8718241</timestamp>
-                                                  <path>/soa/api/v1/dragon</path>
+                                                  <path>/soa/api/v1/dragons</path>
                                                   <messages>
                                                     <message>Internal Server Error</message>
                                                   </messages>
@@ -101,8 +134,39 @@ public class DragonController {
                                     )))
             }
     )
-    public ResponseEntity<DragonResponseDto> create(@RequestBody @Valid DragonRequestDto dto) {
-        return new ResponseEntity<>(new DragonResponseDto(), HttpStatus.CREATED);
+    public ResponseEntity<DragonResponseDto> create(@RequestBody @Valid
+                                                        @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(examples = @ExampleObject(
+            value = """
+                    <dragon>
+                        <name>string</name>
+                        <coordinates>
+                            <x>135</x>
+                            <y>0.1</y>
+                        </coordinates>
+                        <age>1</age>
+                        <description>string</description>
+                        <weight>1</weight>
+                        <type>WATER</type>
+                        <killer>
+                            <id>0</id>
+                            <name>string</name>
+                            <birthday>2025-10-30</birthday>
+                            <height>1</height>
+                            <weight>0.1</weight>
+                            <passportID>strings</passportID>
+                            <team>
+                                <id>0</id>
+                                <name>string</name>
+                                <cave>
+                                    <id>0</id>
+                                    <name>string</name>
+                                </cave>
+                            </team>
+                        </killer>
+                    </dragon>
+                    """
+    ))) DragonRequestDto dto) {
+        return new ResponseEntity<>(dragonService.save(dto), HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/{id}", produces = APPLICATION_XML_VALUE)
@@ -115,7 +179,40 @@ public class DragonController {
                             description = "Дракон найден",
                             content = @Content(
                                     mediaType = APPLICATION_XML_VALUE,
-                                    schema = @Schema(implementation = DragonResponseDto.class))),
+                                    schema = @Schema(implementation = DragonResponseDto.class),
+                                    examples = @ExampleObject(
+                                            value = """
+                                                    <dragon>
+                                                        <id>1</id>
+                                                    	<name>string</name>
+                                                    	<coordinates>
+                                                    		<x>135</x>
+                                                    		<y>0.1</y>
+                                                    	</coordinates>
+                                                    	<creationDate>2025-10-30T14:55:51.179Z</creationDate>
+                                                    	<age>1</age>
+                                                    	<description>string</description>
+                                                    	<weight>1</weight>
+                                                    	<type>WATER</type>
+                                                    	<killer>
+                                                    		<id>0</id>
+                                                    		<name>string</name>
+                                                    		<birthday>2025-10-30</birthday>
+                                                    		<height>1</height>
+                                                    		<weight>0.1</weight>
+                                                    		<passportID>strings</passportID>
+                                                    		<team>
+                                                    			<id>0</id>
+                                                    			<name>string</name>
+                                                    			<cave>
+                                                    				<id>0</id>
+                                                    				<name>string</name>
+                                                    			</cave>
+                                                    		</team>
+                                                    	</killer>
+                                                    </dragon>
+                                                    """
+                                    ))),
                     @ApiResponse(
                             responseCode = "400",
                             description = "Неверный формат запроса",
@@ -127,7 +224,7 @@ public class DragonController {
                                                 <error>
                                                   <status>BAD_REQUEST</status>
                                                   <timestamp>2025-09-14T11:58:48.0675202</timestamp>
-                                                  <path>/soa/api/v1/dragon/1</path>
+                                                  <path>/soa/api/v1/dragons/1</path>
                                                   <messages>
                                                     <message>JSON parse error</message>
                                                   </messages>
@@ -145,7 +242,7 @@ public class DragonController {
                                                 <error>
                                                   <status>NOT_FOUND</status>
                                                   <timestamp>2025-09-14T11:58:48.0675202</timestamp>
-                                                  <path>/soa/api/v1/dragon/1</path>
+                                                  <path>/soa/api/v1/dragons/1</path>
                                                   <messages>
                                                     <message>Dragon not found</message>
                                                   </messages>
@@ -163,7 +260,7 @@ public class DragonController {
                                                 <error>
                                                   <status>INTERNAL_SERVER_ERROR</status>
                                                   <timestamp>2025-09-14T12:00:54.8718241</timestamp>
-                                                  <path>/soa/api/v1/dragon/1</path>
+                                                  <path>/soa/api/v1/dragons/1</path>
                                                   <messages>
                                                     <message>Internal Server Error</message>
                                                   </messages>
@@ -173,7 +270,7 @@ public class DragonController {
             }
     )
     public ResponseEntity<DragonResponseDto> getById(@PathVariable @Valid Long id) {
-        return ResponseEntity.ok(new DragonResponseDto());
+        return ResponseEntity.ok(dragonService.findById(id));
     }
 
     @PutMapping(value = "/{id}", produces = APPLICATION_XML_VALUE, consumes = APPLICATION_XML_VALUE)
@@ -186,7 +283,40 @@ public class DragonController {
                             description = "Дракон обновлён",
                             content = @Content(
                                     mediaType = APPLICATION_XML_VALUE,
-                                    schema = @Schema(implementation = DragonResponseDto.class))),
+                                    schema = @Schema(implementation = DragonResponseDto.class),
+                                    examples = @ExampleObject(
+                                            value = """
+                                                    <dragon>
+                                                        <id>1</id>
+                                                    	<name>string</name>
+                                                    	<coordinates>
+                                                    		<x>135</x>
+                                                    		<y>0.1</y>
+                                                    	</coordinates>
+                                                    	<creationDate>2025-10-30T14:55:51.179Z</creationDate>
+                                                    	<age>1</age>
+                                                    	<description>string</description>
+                                                    	<weight>1</weight>
+                                                    	<type>WATER</type>
+                                                    	<killer>
+                                                    		<id>0</id>
+                                                    		<name>string</name>
+                                                    		<birthday>2025-10-30</birthday>
+                                                    		<height>1</height>
+                                                    		<weight>0.1</weight>
+                                                    		<passportID>strings</passportID>
+                                                    		<team>
+                                                    			<id>0</id>
+                                                    			<name>string</name>
+                                                    			<cave>
+                                                    				<id>0</id>
+                                                    				<name>string</name>
+                                                    			</cave>
+                                                    		</team>
+                                                    	</killer>
+                                                    </dragon>
+                                                    """
+                                    ))),
                     @ApiResponse(
                             responseCode = "400",
                             description = "Неверный формат запроса",
@@ -198,7 +328,7 @@ public class DragonController {
                                                 <error>
                                                   <status>BAD_REQUEST</status>
                                                   <timestamp>2025-09-14T11:58:48.0675202</timestamp>
-                                                  <path>/soa/api/v1/dragon/1</path>
+                                                  <path>/soa/api/v1/dragons/1</path>
                                                   <messages>
                                                     <message>JSON parse error</message>
                                                   </messages>
@@ -216,7 +346,7 @@ public class DragonController {
                                                 <error>
                                                   <status>NOT_FOUND</status>
                                                   <timestamp>2025-09-14T11:58:48.0675202</timestamp>
-                                                  <path>/soa/api/v1/dragon/1</path>
+                                                  <path>/soa/api/v1/dragons/1</path>
                                                   <messages>
                                                     <message>Dragon not found</message>
                                                   </messages>
@@ -233,7 +363,7 @@ public class DragonController {
                                                 <error>
                                                   <status>UNPROCESSABLE_ENTITY</status>
                                                   <timestamp>2025-09-13T14:55:27.6973344</timestamp>
-                                                  <path>/soa/api/v1/dragon/1</path>
+                                                  <path>/soa/api/v1/dragons/1</path>
                                                   <messages>
                                                       <message>Field 'age': должно быть не меньше 1</message>
                                                   </messages>
@@ -251,7 +381,7 @@ public class DragonController {
                                                 <error>
                                                   <status>INTERNAL_SERVER_ERROR</status>
                                                   <timestamp>2025-09-14T12:00:54.8718241</timestamp>
-                                                  <path>/soa/api/v1/dragon/1</path>
+                                                  <path>/soa/api/v1/dragons/1</path>
                                                   <messages>
                                                     <message>Internal Server Error</message>
                                                   </messages>
@@ -260,8 +390,39 @@ public class DragonController {
                                     )))
             }
     )
-    public ResponseEntity<DragonResponseDto> update(@PathVariable @Valid Long id, @RequestBody @Valid DragonRequestDto dto) {
-        return ResponseEntity.ok(new DragonResponseDto());
+    public ResponseEntity<DragonResponseDto> update(@PathVariable @Valid Long id, @RequestBody @Valid
+                                                    @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(examples = @ExampleObject(
+            value = """
+                    <dragon>
+                        <name>string</name>
+                        <coordinates>
+                            <x>135</x>
+                            <y>0.1</y>
+                        </coordinates>
+                        <age>1</age>
+                        <description>string</description>
+                        <weight>1</weight>
+                        <type>WATER</type>
+                        <killer>
+                            <id>0</id>
+                            <name>string</name>
+                            <birthday>2025-10-30</birthday>
+                            <height>1</height>
+                            <weight>0.1</weight>
+                            <passportID>strings</passportID>
+                            <team>
+                                <id>0</id>
+                                <name>string</name>
+                                <cave>
+                                    <id>0</id>
+                                    <name>string</name>
+                                </cave>
+                            </team>
+                        </killer>
+                    </dragon>
+                    """
+        ))) DragonRequestDto dto) {
+        return ResponseEntity.ok(dragonService.update(id, dto));
     }
 
     @DeleteMapping(value = "/{id}", produces = APPLICATION_XML_VALUE)
@@ -284,7 +445,7 @@ public class DragonController {
                                                 <error>
                                                   <status>BAD_REQUEST</status>
                                                   <timestamp>2025-09-14T11:58:48.0675202</timestamp>
-                                                  <path>/soa/api/v1/dragon/1</path>
+                                                  <path>/soa/api/v1/dragons/1</path>
                                                   <messages>
                                                     <message>JSON parse error</message>
                                                   </messages>
@@ -302,7 +463,7 @@ public class DragonController {
                                                 <error>
                                                   <status>NOT_FOUND</status>
                                                   <timestamp>2025-09-14T11:58:48.0675202</timestamp>
-                                                  <path>/soa/api/v1/dragon/1</path>
+                                                  <path>/soa/api/v1/dragons/1</path>
                                                   <messages>
                                                     <message>Dragon not found</message>
                                                   </messages>
@@ -320,7 +481,7 @@ public class DragonController {
                                                 <error>
                                                   <status>INTERNAL_SERVER_ERROR</status>
                                                   <timestamp>2025-09-14T12:00:54.8718241</timestamp>
-                                                  <path>/soa/api/v1/dragon/1</path>
+                                                  <path>/soa/api/v1/dragons/1</path>
                                                   <messages>
                                                     <message>Internal Server Error</message>
                                                   </messages>
@@ -330,6 +491,7 @@ public class DragonController {
             }
     )
     public ResponseEntity<Void> delete(@PathVariable @Valid Long id) {
+        dragonService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
@@ -352,7 +514,47 @@ public class DragonController {
                             description = "Страница драконов найдена",
                             content = @Content(
                                     mediaType = APPLICATION_XML_VALUE,
-                                    schema = @Schema(implementation = PagedDragonListDto.class))),
+                                    schema = @Schema(implementation = PagedDragonListDto.class),
+                                    examples = @ExampleObject(
+                                            value = """
+                                                    <dragonsPage>
+                                                        <content>
+                                                            <dragon>
+                                                                <id>1</id>
+                                                                <name>string</name>
+                                                                <coordinates>
+                                                                    <x>135</x>
+                                                                    <y>0.1</y>
+                                                                </coordinates>
+                                                                <creationDate>2025-10-30T14:12:29.541Z</creationDate>
+                                                                <age>1</age>
+                                                                <description>string</description>
+                                                                <weight>1</weight>
+                                                                <type>WATER</type>
+                                                                <person>
+                                                                    <id>0</id>
+                                                                    <name>string</name>
+                                                                    <birthday>2025-10-30</birthday>
+                                                                    <height>1</height>
+                                                                    <weight>0.1</weight>
+                                                                    <passportID>strings</passportID>
+                                                                    <team>
+                                                                        <id>0</id>
+                                                                        <name>string</name>
+                                                                        <cave>
+                                                                            <id>0</id>
+                                                                            <name>string</name>
+                                                                        </cave>
+                                                                    </team>
+                                                                </person>
+                                                            </dragon>
+                                                        </content>
+                                                        <page>0</page>
+                                                        <size>0</size>
+                                                        <total>0</total>
+                                                    </dragonsPage>
+                                                    """
+                                    ))),
                     @ApiResponse(
                             responseCode = "400",
                             description = "Некорректный формат запроса или параметры сортировки/пагинации",
@@ -364,7 +566,7 @@ public class DragonController {
                                                 <error>
                                                   <status>BAD_REQUEST</status>
                                                   <timestamp>2025-09-14T12:00:54.8718241</timestamp>
-                                                  <path>/soa/api/v1/dragon/search</path>
+                                                  <path>/soa/api/v1/dragons/search</path>
                                                   <messages>
                                                     <message>JSON parse error</message>
                                                   </messages>
@@ -382,7 +584,7 @@ public class DragonController {
                                                 <error>
                                                   <status>UNPROCESSABLE_ENTITY</status>
                                                   <timestamp>2025-09-14T15:29:35.4584707</timestamp>
-                                                  <path>/soa/api/v1/dragon/search</path>
+                                                  <path>/soa/api/v1/dragons/search</path>
                                                   <messages>
                                                     <message>Failed to convert param with value 'E' to type: 'FilterOperation'</message>
                                                   </messages>
@@ -400,7 +602,7 @@ public class DragonController {
                                                 <error>
                                                   <status>INTERNAL_SERVER_ERROR</status>
                                                   <timestamp>2025-09-14T12:00:54.8718241</timestamp>
-                                                  <path>/soa/api/v1/dragon/search</path>
+                                                  <path>/soa/api/v1/dragons/search</path>
                                                   <messages>
                                                     <message>Internal Server Error</message>
                                                   </messages>
@@ -427,7 +629,40 @@ public class DragonController {
                             description = "Дракон найден",
                             content = @Content(
                                     mediaType = APPLICATION_XML_VALUE,
-                                    schema = @Schema(implementation = DragonResponseDto.class))),
+                                    schema = @Schema(implementation = DragonResponseDto.class),
+                                    examples = @ExampleObject(
+                                            value = """
+                                                    <dragon>
+                                                        <id>1</id>
+                                                    	<name>string</name>
+                                                    	<coordinates>
+                                                    		<x>135</x>
+                                                    		<y>0.1</y>
+                                                    	</coordinates>
+                                                    	<creationDate>2025-10-30T14:55:51.179Z</creationDate>
+                                                    	<age>1</age>
+                                                    	<description>string</description>
+                                                    	<weight>1</weight>
+                                                    	<type>WATER</type>
+                                                    	<killer>
+                                                    		<id>0</id>
+                                                    		<name>string</name>
+                                                    		<birthday>2025-10-30</birthday>
+                                                    		<height>1</height>
+                                                    		<weight>0.1</weight>
+                                                    		<passportID>strings</passportID>
+                                                    		<team>
+                                                    			<id>0</id>
+                                                    			<name>string</name>
+                                                    			<cave>
+                                                    				<id>0</id>
+                                                    				<name>string</name>
+                                                    			</cave>
+                                                    		</team>
+                                                    	</killer>
+                                                    </dragon>
+                                                    """
+                                    ))),
                     @ApiResponse(
                             responseCode = "204",
                             description = "Коллекция пуста, драконов нет",
@@ -443,7 +678,7 @@ public class DragonController {
                                                 <error>
                                                   <status>INTERNAL_SERVER_ERROR</status>
                                                   <timestamp>2025-09-14T12:00:54.8718241</timestamp>
-                                                  <path>/soa/api/v1/dragon/name/min</path>
+                                                  <path>/soa/api/v1/dragons/name/min</path>
                                                   <messages>
                                                     <message>Internal Server Error</message>
                                                   </messages>
@@ -453,7 +688,11 @@ public class DragonController {
             }
     )
     public ResponseEntity<DragonResponseDto> getMinByName() {
-        return ResponseEntity.ok(new DragonResponseDto());
+        DragonResponseDto dragon = dragonService.findMinByName();
+        if (dragon == null) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(dragon);
     }
 
     @GetMapping(value = "/type/count", produces = APPLICATION_XML_VALUE)
@@ -468,6 +707,10 @@ public class DragonController {
                                     mediaType = APPLICATION_XML_VALUE,
                                     schema = @Schema(implementation = DragonTypeCountListDto.class))),
                     @ApiResponse(
+                            responseCode = "204",
+                            description = "Коллекция пуста, драконов нет",
+                            content = @Content),
+                    @ApiResponse(
                             responseCode = "500",
                             description = "Внутренняя ошибка сервера",
                             content = @Content(
@@ -478,7 +721,7 @@ public class DragonController {
                                                 <error>
                                                   <status>INTERNAL_SERVER_ERROR</status>
                                                   <timestamp>2025-09-14T12:00:54.8718241</timestamp>
-                                                  <path>/soa/api/v1/dragon/type/count</path>
+                                                  <path>/soa/api/v1/dragons/type/count</path>
                                                   <messages>
                                                     <message>Internal Server Error</message>
                                                   </messages>
@@ -488,11 +731,11 @@ public class DragonController {
             }
     )
     public ResponseEntity<DragonTypeCountListDto> countByType() {
-        return ResponseEntity.ok(new DragonTypeCountListDto(
-                List.of(
-                        new DragonTypeCountDto(DragonType.AIR, 1L),
-                        new DragonTypeCountDto(DragonType.FIRE, 3L)
-                        )));
+        List<DragonTypeCountDto> counts = dragonService.countByType();
+        if (counts.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(new DragonTypeCountListDto(counts));
     }
 
     @GetMapping(value = "/type/count/greater", produces = APPLICATION_XML_VALUE)
@@ -521,7 +764,7 @@ public class DragonController {
                                                 <error>
                                                   <status>BAD_REQUEST</status>
                                                   <timestamp>2025-09-14T11:58:48.0675202</timestamp>
-                                                  <path>/soa/api/v1/dragon/1</path>
+                                                  <path>/soa/api/v1/dragons/1</path>
                                                   <messages>
                                                     <message>Failed to convert param 'type' with value: 'NOPE'</message>
                                                   </messages>
@@ -539,7 +782,7 @@ public class DragonController {
                                                 <error>
                                                   <status>INTERNAL_SERVER_ERROR</status>
                                                   <timestamp>2025-09-14T12:00:54.8718241</timestamp>
-                                                  <path>/soa/api/v1/dragon/type/count/greater</path>
+                                                  <path>/soa/api/v1/dragons/type/count/greater</path>
                                                   <messages>
                                                     <message>Internal Server Error</message>
                                                   </messages>
@@ -549,8 +792,10 @@ public class DragonController {
             }
     )
     public ResponseEntity<ApiNumberResponse> countByTypeGreater(@RequestParam @Valid DragonType type) {
-//        throw new RuntimeException();
-        return ResponseEntity.ok(new ApiNumberResponse(0L));
+        if (dragonService.count() == 0) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(new ApiNumberResponse(dragonService.countByTypeGreater(type)));
     }
 
 }

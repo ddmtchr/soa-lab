@@ -1,5 +1,6 @@
 package com.ddmtchr.soalab.dto.coordinates;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;
@@ -8,15 +9,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @XmlRootElement(name = "coordinates")
 @JacksonXmlRootElement(localName = "coordinates")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 public class CoordinatesResponseDto {
-
-    @NotNull
-    private Long id;
 
     @Max(135)
     private float x; //Максимальное значение поля: 135

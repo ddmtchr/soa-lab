@@ -19,7 +19,7 @@ public class SwaggerConfig {
                 .pathsToMatch("/dragons/**", "/caves/**")
                 .addOpenApiCustomizer(openApi -> {
                             Server server = new Server();
-                            server.setUrl("http://localhost:9876/soa/api/v1");
+                            server.setUrl("https://localhost:9876/soa/api/v1");
                             server.setDescription("Dragons and caves server");
                             openApi.servers(List.of(server))
                                     .info(new Info()
@@ -38,7 +38,7 @@ public class SwaggerConfig {
                 .pathsToMatch("/killer/**", "/persons/**", "/teams/**")
                 .addOpenApiCustomizer(openApi -> {
                     Server server = new Server();
-                    server.setUrl("http://localhost:9877/soa/api/v1");
+                    server.setUrl("https://localhost:9877/soa/api/v1");
                     server.setDescription("Persons and teams server");
                     openApi.servers(List.of(server))
                             .info(new Info()

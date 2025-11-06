@@ -32,19 +32,19 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(PageableValidationException.class)
     public ResponseEntity<Object> handlePageableValidationException(PageableValidationException ex, HttpServletRequest request) {
-        log.warn(ex.getMessage(), ex);
+        log.warn(ex.getMessage());
         return buildResponseEntity(HttpStatus.BAD_REQUEST, LocalDateTime.now(), request, List.of(ex.getMessage()));
     }
 
     @ExceptionHandler(FilterValidationException.class)
     public ResponseEntity<Object> handleFilterValidationException(FilterValidationException ex, HttpServletRequest request) {
-        log.warn(ex.getMessage(), ex);
+        log.warn(ex.getMessage());
         return buildResponseEntity(HttpStatus.BAD_REQUEST, LocalDateTime.now(), request, List.of(ex.getMessage()));
     }
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<Object> handleNotFoundException(NotFoundException ex, HttpServletRequest request) {
-        log.warn(ex.getMessage(), ex);
+        log.warn(ex.getMessage());
         return buildResponseEntity(HttpStatus.NOT_FOUND, LocalDateTime.now(), request, List.of(ex.getMessage()));
     }
 
@@ -61,7 +61,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
             @NonNull HttpHeaders headers,
             @NonNull HttpStatusCode status,
             @NonNull WebRequest request) {
-        log.warn(ex.getMessage(), ex);
+        log.warn(ex.getMessage());
 
         HttpServletRequest servletRequest = ((ServletWebRequest) request).getRequest();
 
@@ -85,7 +85,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
             @NonNull HttpHeaders headers,
             @NonNull HttpStatusCode status,
             @NonNull WebRequest request) {
-        log.warn(ex.getMessage(), ex);
+        log.warn(ex.getMessage());
 
         HttpServletRequest servletRequest = ((ServletWebRequest) request).getRequest();
 
@@ -102,7 +102,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
             @NonNull HttpHeaders headers,
             @NonNull HttpStatusCode status,
             @NonNull WebRequest request) {
-        log.warn(ex.getMessage(), ex);
+        log.warn(ex.getMessage());
 
         HttpServletRequest servletRequest = ((ServletWebRequest) request).getRequest();
 
@@ -125,7 +125,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         if (status.is5xxServerError()) {
             log.error(ex.getMessage(), ex);
         } else {
-            log.warn(ex.getMessage(), ex);
+            log.warn(ex.getMessage());
         }
 
         ApiErrorResponse error = new ApiErrorResponse(
