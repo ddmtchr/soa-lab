@@ -23,7 +23,7 @@ public class Dragon {
     @Min(1)
     private Long id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, columnDefinition = "varchar")
     @NotBlank
     private String name; //Поле не может быть null, Строка не может быть пустой
 
@@ -39,7 +39,7 @@ public class Dragon {
     @Min(1)
     private int age; //Значение поля должно быть больше 0
 
-    @Column(name = "description", nullable = true)
+    @Column(name = "description", nullable = true, columnDefinition = "varchar")
     private String description; //Поле может быть null
 
     @Column(name = "weight", nullable = false)

@@ -21,7 +21,7 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, columnDefinition = "varchar")
     @NotBlank
     private String name; //Поле не может быть null, Строка не может быть пустой
 
