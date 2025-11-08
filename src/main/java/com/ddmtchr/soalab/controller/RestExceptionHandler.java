@@ -7,6 +7,7 @@ import com.ddmtchr.soalab.exception.PageableValidationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpHeaders;
@@ -46,6 +47,19 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleNotFoundException(NotFoundException ex, HttpServletRequest request) {
         log.warn(ex.getMessage());
         return buildResponseEntity(HttpStatus.NOT_FOUND, LocalDateTime.now(), request, List.of(ex.getMessage()));
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    protected ResponseEntity<Object> handleConstraintViolationException(
+            @NonNull ConstraintViolationException ex,
+            @NonNull HttpServletRequest request) {
+        log.warn(ex.getMessage());
+
+        List<String> errors = ex.getConstraintViolations().stream()
+                .map(el -> el.getPropertyPath().toString() + ": " + el.getMessage())
+                .sorted()
+                .toList();
+        return buildResponseEntity(HttpStatus.UNPROCESSABLE_ENTITY, LocalDateTime.now(), request, errors);
     }
 
     // unhandled ex

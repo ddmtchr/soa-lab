@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 public class CoordinatesRequestDto {
 
     @Max(135)
-    private float x; //Максимальное значение поля: 135
+    private Float x; //Максимальное значение поля: 135
 
     @NotNull
     private Float y; //Поле не может быть null

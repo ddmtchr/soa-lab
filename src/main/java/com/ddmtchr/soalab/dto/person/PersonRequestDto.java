@@ -28,10 +28,10 @@ public class PersonRequestDto {
     private LocalDate birthday; //Поле может быть null
 
     @Min(1)
-    private long height; //Значение поля должно быть больше 0
+    private Long height; //Значение поля должно быть больше 0
 
     @Min(1)
-    private double weight; //Значение поля должно быть больше 0
+    private Double weight; //Значение поля должно быть больше 0
 
     @Size(min = 7, max = 34)
     private String passportID; //Длина строки должна быть не меньше 7, Строка не может быть пустой, Длина строки не должна быть больше 34, Поле может быть null

@@ -18,11 +18,13 @@ public interface DragonMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "creationDate", ignore = true)
+    @Mapping(target = "age", source = "age", defaultValue = "1")
     Dragon toEntity(DragonRequestDto dto);
 
     Dragon toEntity(DragonResponseDto dto);
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "age", source = "age", defaultValue = "1")
     void updateDragon(DragonRequestDto requestDto, @MappingTarget Dragon dragon);
 
     void updateDragon(DragonResponseDto requestDto, @MappingTarget Dragon dragon);

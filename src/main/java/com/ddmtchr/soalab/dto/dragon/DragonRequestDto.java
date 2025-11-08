@@ -32,7 +32,7 @@ public class DragonRequestDto {
     private CoordinatesResponseDto coordinates; //Поле не может быть null
 
     @Min(1)
-    private int age; //Значение поля должно быть больше 0
+    private Integer age; //Значение поля должно быть больше 0
 
     private String description; //Поле может быть null
 

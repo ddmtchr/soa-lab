@@ -13,5 +13,6 @@ public interface CoordinatesMapper {
     CoordinatesResponseDto toResponseDto(Coordinates entity);
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "x", source = "x", defaultValue = "0.0F")
     Coordinates toEntity(CoordinatesRequestDto dto);
 }
