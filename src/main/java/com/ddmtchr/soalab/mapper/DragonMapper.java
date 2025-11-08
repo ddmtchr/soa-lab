@@ -25,7 +25,8 @@ public interface DragonMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "age", source = "age", defaultValue = "1")
+    @Mapping(target = "killer", ignore = true)
     void updateDragon(DragonRequestDto requestDto, @MappingTarget Dragon dragon);
 
-    void updateDragon(DragonResponseDto requestDto, @MappingTarget Dragon dragon);
+    void updateDragon(DragonResponseDto responseDto, @MappingTarget Dragon dragon);
 }
