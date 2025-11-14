@@ -3,6 +3,7 @@ package com.ddmtchr.soalab.repository;
 import com.ddmtchr.soalab.dto.dragon.DragonType;
 import com.ddmtchr.soalab.dto.dragon.DragonTypeCountDto;
 import com.ddmtchr.soalab.entity.Dragon;
+import com.ddmtchr.soalab.entity.Person;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -20,4 +21,6 @@ public interface DragonRepository extends JpaRepository<Dragon, Long>, JpaSpecif
     List<DragonTypeCountDto> countAllByTypes();
 
     long countByTypeGreaterThan(DragonType type);
+
+    List<Dragon> findAllByKiller(Person person);
 }

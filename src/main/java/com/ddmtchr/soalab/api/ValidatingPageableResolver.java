@@ -12,6 +12,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import java.util.ArrayList;
@@ -19,9 +20,15 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class ValidatingPageableResolver extends PageableHandlerMethodArgumentResolver {
+public class ValidatingPageableResolver implements HandlerMethodArgumentResolver {
 
+    private final PageableHandlerMethodArgumentResolver delegate;
     private final EntityFieldValidator entityFieldValidator;
+
+    @Override
+    public boolean supportsParameter(@NonNull MethodParameter parameter) {
+        return delegate.supportsParameter(parameter);
+    }
 
     @Override
     public @NonNull Pageable resolveArgument(
@@ -30,7 +37,7 @@ public class ValidatingPageableResolver extends PageableHandlerMethodArgumentRes
             @NonNull NativeWebRequest webRequest,
             @Nullable WebDataBinderFactory binderFactory) {
 
-        Pageable pageable = super.resolveArgument(methodParameter, mavContainer, webRequest, binderFactory);
+        Pageable pageable = delegate.resolveArgument(methodParameter, mavContainer, webRequest, binderFactory);
 
         PageableEntity annotation = methodParameter.getParameterAnnotation(PageableEntity.class);
         if (annotation != null) {
