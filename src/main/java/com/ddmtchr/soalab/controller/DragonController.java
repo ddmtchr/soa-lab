@@ -17,7 +17,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -614,7 +613,7 @@ public class DragonController {
     )
     public ResponseEntity<PagedDragonListDto> search(
             @RequestBody(required = false) @Valid FilterRequestDto filter,
-            @ParameterObject @Valid @PageableDefault(sort = "id", direction = Sort.Direction.ASC) @PageableEntity(entityClass = Dragon.class) Pageable pageable) {
+            @ParameterObject @Valid @PageableDefault @PageableEntity(entityClass = Dragon.class) Pageable pageable) {
         PagedDragonListDto page = dragonService.search(filter, pageable);
 
         return ResponseEntity.ok(page);
