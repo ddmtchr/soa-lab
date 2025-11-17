@@ -2,6 +2,7 @@ package com.ddmtchr.soalab.dto.dragon;
 
 import com.ddmtchr.soalab.dto.coordinates.CoordinatesResponseDto;
 import com.ddmtchr.soalab.dto.person.PersonResponseDto;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -37,6 +38,7 @@ public class DragonResponseDto {
     @NotNull
     private CoordinatesResponseDto coordinates; //Поле не может быть null
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX", timezone = "UTC")
     private ZonedDateTime creationDate = ZonedDateTime.now(); //Поле не может быть null, Значение этого поля должно генерироваться автоматически
 
     @Min(1)

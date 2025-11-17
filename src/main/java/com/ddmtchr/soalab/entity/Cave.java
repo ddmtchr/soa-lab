@@ -17,7 +17,7 @@ public class Cave {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false, columnDefinition = "varchar")
+    @Column(name = "name", nullable = false, columnDefinition = "text")
     @NotBlank
     private String name;
 }

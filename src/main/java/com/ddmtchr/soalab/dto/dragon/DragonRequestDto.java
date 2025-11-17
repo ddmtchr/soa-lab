@@ -1,6 +1,6 @@
 package com.ddmtchr.soalab.dto.dragon;
 
-import com.ddmtchr.soalab.dto.coordinates.CoordinatesResponseDto;
+import com.ddmtchr.soalab.dto.coordinates.CoordinatesRequestDto;
 import com.ddmtchr.soalab.dto.person.PersonResponseDto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
@@ -29,7 +29,7 @@ public class DragonRequestDto {
 
     @Valid
     @NotNull
-    private CoordinatesResponseDto coordinates; //Поле не может быть null
+    private CoordinatesRequestDto coordinates; //Поле не может быть null
 
     @Min(1)
     private Integer age; //Значение поля должно быть больше 0

@@ -35,7 +35,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("https://se.ifmo.ru", "http://localhost:3000")
+                .allowedOrigins("https://se.ifmo.ru", "http://127.0.0.1:3000", "http://localhost:3000")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
                 .allowedHeaders("*")
                 .maxAge(3600);
