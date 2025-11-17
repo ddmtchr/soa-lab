@@ -51,6 +51,31 @@ public class EntityFieldValidator {
         }
     }
 
+    public Class<?> getFieldType(Class<?> entityClass, String fieldPath) {
+        try {
+            String[] parts = fieldPath.split("\\.");
+            Class<?> current = entityClass;
+
+            for (int i = 0; i < parts.length; i++) {
+                Field field = getField(current, parts[i]);
+                if (field == null) {
+                    return null;
+                }
+
+                Class<?> type = field.getType();
+
+                if (i == parts.length - 1) {
+                    return type;
+                }
+
+                current = type;
+            }
+            return null;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     private Field getField(Class<?> clazz, String fieldName) {
         for (Field field : ReflectionUtil.getAllFieldsFromCache(clazz)) {
             if (field.getName().equals(fieldName)) return field;

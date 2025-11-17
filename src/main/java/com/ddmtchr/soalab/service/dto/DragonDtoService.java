@@ -1,5 +1,6 @@
 package com.ddmtchr.soalab.service.dto;
 
+import com.ddmtchr.soalab.dto.api.FilterOperation;
 import com.ddmtchr.soalab.dto.api.filter.FilterCriteria;
 import com.ddmtchr.soalab.dto.api.filter.FilterRequestDto;
 import com.ddmtchr.soalab.dto.dragon.*;
@@ -132,6 +133,14 @@ public class DragonDtoService {
             if (!entityFieldValidator.isValidFieldPath(entityClass, f.getField())) {
                 errors.add("Filtering by field '%s' unavailable for entity %s"
                         .formatted(f.getField(), entityClass.getSimpleName()));
+            } else {
+                if (FilterOperation.LIKE.equals(f.getOp())) {
+                    Class<?> fieldType = entityFieldValidator.getFieldType(entityClass, f.getField());
+                    if (fieldType != String.class) {
+                        errors.add("LIKE operation can only be used with string fields. Field '%s' has type %s"
+                                .formatted(f.getField(), fieldType.getSimpleName()));
+                    }
+                }
             }
         }
 
