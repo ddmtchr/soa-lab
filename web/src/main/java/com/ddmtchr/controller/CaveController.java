@@ -1,0 +1,367 @@
+package com.ddmtchr.controller;
+
+import com.ddmtchr.api.dto.api.ApiErrorResponse;
+import com.ddmtchr.api.dto.cave.CaveListDto;
+import com.ddmtchr.api.dto.cave.CaveRequestDto;
+import com.ddmtchr.api.dto.cave.CaveResponseDto;
+import com.ddmtchr.api.service.CaveDtoService;
+import com.ddmtchr.jndi.EjbLocator;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import static org.springframework.http.MediaType.APPLICATION_XML_VALUE;
+
+@RestController
+@RequestMapping(path = "/caves")
+@Tag(name = "Cave API", description = "Пещеры")
+public class CaveController {
+
+    private final CaveDtoService caveService;
+
+    public CaveController(EjbLocator ejbLocator) {
+        this.caveService = ejbLocator.lookup("ejb:/ejb/CaveDtoServiceImpl!com.ddmtchr.api.service.CaveDtoService", CaveDtoService.class);
+    }
+
+    @PostMapping(consumes = APPLICATION_XML_VALUE, produces = APPLICATION_XML_VALUE)
+    @Operation(
+            summary = "Создать новую пещеру",
+            description = "Добавляет новую пещеру. ID генерируется автоматически.",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "201",
+                            description = "Пещера успешно создана",
+                            content = @Content(
+                                    mediaType = APPLICATION_XML_VALUE,
+                                    schema = @Schema(implementation = CaveResponseDto.class))),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Неверный формат запроса",
+                            content = @Content(
+                                    mediaType = APPLICATION_XML_VALUE,
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            value = """
+                                                <error>
+                                                  <status>BAD_REQUEST</status>
+                                                  <timestamp>2025-09-14T11:58:48.0675202</timestamp>
+                                                  <path>/soa/api/v1/caves</path>
+                                                  <messages>
+                                                    <message>JSON parse error</message>
+                                                  </messages>
+                                                </error>
+                                                """
+                                    ))),
+                    @ApiResponse(
+                            responseCode = "422",
+                            description = "Неверные входные данные (например, пустое имя)",
+                            content = @Content(
+                                    mediaType = APPLICATION_XML_VALUE,
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            value = """
+                                                <error>
+                                                  <status>UNPROCESSABLE_ENTITY</status>
+                                                  <timestamp>2025-09-13T14:55:27.6973344</timestamp>
+                                                  <path>/soa/api/v1/caves</path>
+                                                  <messages>
+                                                      <message>Field 'name': должно быть заполнено</message>
+                                                  </messages>
+                                                </error>
+                                                """
+                                    ))),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Внутренняя ошибка сервера",
+                            content = @Content(
+                                    mediaType = APPLICATION_XML_VALUE,
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            value = """
+                                                <error>
+                                                  <status>INTERNAL_SERVER_ERROR</status>
+                                                  <timestamp>2025-09-14T12:00:54.8718241</timestamp>
+                                                  <path>/soa/api/v1/caves</path>
+                                                  <messages>
+                                                    <message>Internal Server Error</message>
+                                                  </messages>
+                                                </error>
+                                                """
+                                    )))
+            }
+    )
+    public ResponseEntity<CaveResponseDto> create(@RequestBody @Valid CaveRequestDto dto) {
+        return new ResponseEntity<>(caveService.save(dto), HttpStatus.CREATED);
+    }
+
+    @GetMapping(value = "/{id}", produces = APPLICATION_XML_VALUE)
+    @Operation(
+            summary = "Получить пещеру по ID",
+            description = "Возвращает объект пещеры по уникальному идентификатору.",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Пещера найдена",
+                            content = @Content(
+                                    mediaType = APPLICATION_XML_VALUE,
+                                    schema = @Schema(implementation = CaveResponseDto.class))),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Неверный формат запроса",
+                            content = @Content(
+                                    mediaType = APPLICATION_XML_VALUE,
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            value = """
+                                                <error>
+                                                  <status>BAD_REQUEST</status>
+                                                  <timestamp>2025-09-14T11:58:48.0675202</timestamp>
+                                                  <path>/soa/api/v1/caves/1</path>
+                                                  <messages>
+                                                    <message>JSON parse error</message>
+                                                  </messages>
+                                                </error>
+                                                """
+                                    ))),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Пещера с указанным ID не найдена",
+                            content = @Content(
+                                    mediaType = APPLICATION_XML_VALUE,
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            value = """
+                                                <error>
+                                                  <status>NOT_FOUND</status>
+                                                  <timestamp>2025-09-14T11:58:48.0675202</timestamp>
+                                                  <path>/soa/api/v1/caves/1</path>
+                                                  <messages>
+                                                    <message>Cave not found</message>
+                                                  </messages>
+                                                </error>
+                                                """
+                                    ))),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Внутренняя ошибка сервера",
+                            content = @Content(
+                                    mediaType = APPLICATION_XML_VALUE,
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            value = """
+                                                <error>
+                                                  <status>INTERNAL_SERVER_ERROR</status>
+                                                  <timestamp>2025-09-14T12:00:54.8718241</timestamp>
+                                                  <path>/soa/api/v1/caves/1</path>
+                                                  <messages>
+                                                    <message>Internal Server Error</message>
+                                                  </messages>
+                                                </error>
+                                                """
+                                    )))
+            }
+    )
+    public ResponseEntity<CaveResponseDto> getById(@PathVariable("id") @Valid Long id) {
+        return ResponseEntity.ok(caveService.findById(id));
+    }
+
+    @PutMapping(value = "/{id}", produces = APPLICATION_XML_VALUE, consumes = APPLICATION_XML_VALUE)
+    @Operation(
+            summary = "Обновить пещеру по ID",
+            description = "Полностью заменяет данные пещеры новыми. ID остается прежним.",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Пещера обновлена",
+                            content = @Content(
+                                    mediaType = APPLICATION_XML_VALUE,
+                                    schema = @Schema(implementation = CaveResponseDto.class))),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Неверный формат запроса",
+                            content = @Content(
+                                    mediaType = APPLICATION_XML_VALUE,
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            value = """
+                                                <error>
+                                                  <status>BAD_REQUEST</status>
+                                                  <timestamp>2025-09-14T11:58:48.0675202</timestamp>
+                                                  <path>/soa/api/v1/caves/1</path>
+                                                  <messages>
+                                                    <message>JSON parse error</message>
+                                                  </messages>
+                                                </error>
+                                                """
+                                    ))),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Пещера с указанным ID не найдена",
+                            content = @Content(
+                                    mediaType = APPLICATION_XML_VALUE,
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            value = """
+                                                <error>
+                                                  <status>NOT_FOUND</status>
+                                                  <timestamp>2025-09-14T11:58:48.0675202</timestamp>
+                                                  <path>/soa/api/v1/caves/1</path>
+                                                  <messages>
+                                                    <message>Cave not found</message>
+                                                  </messages>
+                                                </error>
+                                                """
+                                    ))),
+                    @ApiResponse(
+                            responseCode = "422",
+                            description = "Неверные входные данные (например, пустое имя)",
+                            content = @Content(mediaType = APPLICATION_XML_VALUE,
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            value = """
+                                                <error>
+                                                  <status>UNPROCESSABLE_ENTITY</status>
+                                                  <timestamp>2025-09-13T14:55:27.6973344</timestamp>
+                                                  <path>/soa/api/v1/caves/1</path>
+                                                  <messages>
+                                                      <message>Field 'name': должно быть заполнено</message>
+                                                  </messages>
+                                                </error>
+                                                """
+                                    ))),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Внутренняя ошибка сервера",
+                            content = @Content(
+                                    mediaType = APPLICATION_XML_VALUE,
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            value = """
+                                                <error>
+                                                  <status>INTERNAL_SERVER_ERROR</status>
+                                                  <timestamp>2025-09-14T12:00:54.8718241</timestamp>
+                                                  <path>/soa/api/v1/caves/1</path>
+                                                  <messages>
+                                                    <message>Internal Server Error</message>
+                                                  </messages>
+                                                </error>
+                                                """
+                                    )))
+            }
+    )
+    public ResponseEntity<CaveResponseDto> update(@PathVariable("id") @Valid Long id, @RequestBody @Valid CaveRequestDto dto) {
+        return ResponseEntity.ok(caveService.update(id, dto));
+    }
+
+    @DeleteMapping(value = "/{id}", produces = APPLICATION_XML_VALUE)
+    @Operation(
+            summary = "Удалить пещеру по ID",
+            description = "Удаляет пещеру из коллекции по идентификатору.",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "204",
+                            description = "Пещера удалена",
+                            content = @Content),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Неверный формат запроса",
+                            content = @Content(
+                                    mediaType = APPLICATION_XML_VALUE,
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            value = """
+                                                <error>
+                                                  <status>BAD_REQUEST</status>
+                                                  <timestamp>2025-09-14T11:58:48.0675202</timestamp>
+                                                  <path>/soa/api/v1/caves/1</path>
+                                                  <messages>
+                                                    <message>JSON parse error</message>
+                                                  </messages>
+                                                </error>
+                                                """
+                                    ))),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Пещера не найдена",
+                            content = @Content(
+                                    mediaType = APPLICATION_XML_VALUE,
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            value = """
+                                                <error>
+                                                  <status>NOT_FOUND</status>
+                                                  <timestamp>2025-09-14T11:58:48.0675202</timestamp>
+                                                  <path>/soa/api/v1/caves/1</path>
+                                                  <messages>
+                                                    <message>Cave not found</message>
+                                                  </messages>
+                                                </error>
+                                                """
+                                    ))),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Внутренняя ошибка сервера",
+                            content = @Content(
+                                    mediaType = APPLICATION_XML_VALUE,
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            value = """
+                                                <error>
+                                                  <status>INTERNAL_SERVER_ERROR</status>
+                                                  <timestamp>2025-09-14T12:00:54.8718241</timestamp>
+                                                  <path>/soa/api/v1/caves/1</path>
+                                                  <messages>
+                                                    <message>Internal Server Error</message>
+                                                  </messages>
+                                                </error>
+                                                """
+                                    )))
+            }
+    )
+    public ResponseEntity<Void> delete(@PathVariable("id") @Valid Long id) {
+        caveService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping(produces = APPLICATION_XML_VALUE)
+    @Operation(
+            summary = "Получить список пещер",
+            description = "Возвращает список всех пещер",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Список пещер найден",
+                            content = @Content(
+                                    mediaType = APPLICATION_XML_VALUE,
+                                    schema = @Schema(implementation = CaveListDto.class))),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Внутренняя ошибка сервера",
+                            content = @Content(
+                                    mediaType = APPLICATION_XML_VALUE,
+                                    schema = @Schema(implementation = ApiErrorResponse.class),
+                                    examples = @ExampleObject(
+                                            value = """
+                                                <error>
+                                                  <status>INTERNAL_SERVER_ERROR</status>
+                                                  <timestamp>2025-09-14T12:00:54.8718241</timestamp>
+                                                  <path>/soa/api/v1/caves</path>
+                                                  <messages>
+                                                    <message> Internal Server Error</message>
+                                                  </messages>
+                                                </error>
+                                                """
+                                    )))
+            }
+    )
+    public ResponseEntity<CaveListDto> findAll() {
+        return ResponseEntity.ok(new CaveListDto(caveService.findAll()));
+    }
+}

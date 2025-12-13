@@ -1,0 +1,20 @@
+package com.ddmtchr.api.dto.api;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@XmlRootElement(name = "response")
+@JacksonXmlRootElement(localName = "response")
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+public class ApiNumberResponse implements Serializable {
+    private Number number;
+}
