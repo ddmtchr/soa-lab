@@ -98,15 +98,18 @@ public class DragonDtoService {
 
     public DragonResponseDto findMinByName() {
         Optional<Dragon> opt = dragonService.findMinByName();
+//        Optional<Dragon> opt = Optional.empty();
         return opt.map(dragonMapper::toResponseDto).orElse(null);
     }
 
     public long count() {
         return dragonService.count();
+//        return 0;
     }
 
     public List<DragonTypeCountDto> countByType() {
         return dragonService.countByType();
+//        return Collections.emptyList();
     }
 
     public long countByTypeGreater(DragonType type) {

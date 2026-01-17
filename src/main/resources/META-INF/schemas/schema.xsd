@@ -1,0 +1,588 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:tns="http://com/ddmtchr/soalab/schema"
+        targetNamespace="http://com/ddmtchr/soalab/schema"
+        elementFormDefault="qualified">
+
+<!--    Simple types-->
+    <xs:simpleType name="IdType">
+        <xs:restriction base="xs:long"/>
+    </xs:simpleType>
+
+    <xs:simpleType name="NonEmptyString">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="FilterOperation">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="EQ"/>
+            <xs:enumeration value="NE"/>
+            <xs:enumeration value="GT"/>
+            <xs:enumeration value="GE"/>
+            <xs:enumeration value="LT"/>
+            <xs:enumeration value="LE"/>
+            <xs:enumeration value="LIKE"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="DragonType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="WATER"/>
+            <xs:enumeration value="UNDERGROUND"/>
+            <xs:enumeration value="AIR"/>
+            <xs:enumeration value="FIRE"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+<!--    Complex types-->
+    <xs:complexType name="CaveRequest">
+        <xs:sequence>
+            <xs:element name="name" type="tns:NonEmptyString"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="CaveResponse">
+        <xs:sequence>
+            <xs:element name="id" type="tns:IdType"/>
+            <xs:element name="name" type="tns:NonEmptyString"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="TeamRequest">
+        <xs:sequence>
+            <xs:element name="name" type="tns:NonEmptyString"/>
+            <xs:element name="cave" type="tns:CaveResponse" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="TeamResponse">
+        <xs:sequence>
+            <xs:element name="id" type="tns:IdType"/>
+            <xs:element name="name" type="tns:NonEmptyString"/>
+            <xs:element name="cave" type="tns:CaveResponse" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="PersonRequest">
+        <xs:sequence>
+            <xs:element name="name" type="tns:NonEmptyString"/>
+            <xs:element name="birthday" type="xs:date" minOccurs="0"/>
+            <xs:element name="height" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:long">
+                        <xs:minInclusive value="1"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="weight" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:double">
+                        <xs:minInclusive value="1"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="passportID" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="7"/>
+                        <xs:maxLength value="34"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="team" type="tns:TeamResponse" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="PersonResponse">
+        <xs:sequence>
+            <xs:element name="id" type="tns:IdType"/>
+            <xs:element name="name" type="tns:NonEmptyString"/>
+            <xs:element name="birthday" type="xs:date" minOccurs="0"/>
+            <xs:element name="height" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:long">
+                        <xs:minInclusive value="1"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="weight" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:double">
+                        <xs:minInclusive value="1"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="passportID" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="7"/>
+                        <xs:maxLength value="34"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="team" type="tns:TeamResponse" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="CoordinatesRequest">
+        <xs:sequence>
+            <xs:element name="x" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:decimal">
+                        <xs:maxInclusive value="135"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="y" type="xs:decimal"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="CoordinatesResponse">
+        <xs:sequence>
+            <xs:element name="x" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:float">
+                        <xs:maxInclusive value="135"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="y" type="xs:float"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="DragonRequest">
+        <xs:sequence>
+            <xs:element name="name" type="tns:NonEmptyString"/>
+            <xs:element name="coordinates" type="tns:CoordinatesRequest"/>
+            <xs:element name="age" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:integer">
+                        <xs:minInclusive value="1"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="description" type="xs:string" minOccurs="0"/>
+            <xs:element name="weight">
+                <xs:simpleType>
+                    <xs:restriction base="xs:integer">
+                        <xs:minInclusive value="1"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="type" type="tns:DragonType"/>
+            <xs:element name="killer" type="tns:PersonResponse" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="DragonResponse">
+        <xs:sequence>
+            <xs:element name="id" type="tns:IdType"/>
+            <xs:element name="name" type="tns:NonEmptyString"/>
+            <xs:element name="coordinates" type="tns:CoordinatesResponse"/>
+            <xs:element name="creationDate" type="xs:dateTime"/>
+            <xs:element name="age" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:integer">
+                        <xs:minInclusive value="1"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="description" type="xs:string" minOccurs="0"/>
+            <xs:element name="weight">
+                <xs:simpleType>
+                    <xs:restriction base="xs:integer">
+                        <xs:minInclusive value="1"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="type" type="tns:DragonType"/>
+            <xs:element name="killer" type="tns:PersonResponse" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="DragonTypeCount">
+        <xs:sequence>
+            <xs:element name="type" type="tns:DragonType"/>
+            <xs:element name="count" type="xs:long"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Filter">
+        <xs:sequence>
+            <xs:element name="field" type="tns:NonEmptyString"/>
+            <xs:element name="op" type="tns:FilterOperation"/>
+            <xs:element name="value" type="tns:NonEmptyString"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!--    Requests/responses-->
+
+    <!-- Create cave -->
+    <xs:element name="CreateCaveRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="cave" type="tns:CaveRequest"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="CreateCaveResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="cave" type="tns:CaveResponse"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Get cave by id -->
+    <xs:element name="GetCaveByIdRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="tns:IdType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="GetCaveByIdResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="cave" type="tns:CaveResponse"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Update cave -->
+    <xs:element name="UpdateCaveRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="tns:IdType"/>
+                <xs:element name="cave" type="tns:CaveRequest"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="UpdateCaveResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="cave" type="tns:CaveResponse"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Delete cave -->
+    <xs:element name="DeleteCaveRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="tns:IdType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="DeleteCaveResponse">
+        <xs:complexType/>
+    </xs:element>
+
+    <!-- Find all caves -->
+    <xs:element name="FindAllCavesRequest">
+        <xs:complexType/>
+    </xs:element>
+
+    <xs:element name="FindAllCavesResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="cave" type="tns:CaveResponse" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Create team -->
+    <xs:element name="CreateTeamRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="team" type="tns:TeamRequest"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="CreateTeamResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="team" type="tns:TeamResponse"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Get team by id -->
+    <xs:element name="GetTeamByIdRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="tns:IdType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="GetTeamByIdResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="team" type="tns:TeamResponse"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Update team -->
+    <xs:element name="UpdateTeamRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="tns:IdType"/>
+                <xs:element name="team" type="tns:TeamRequest"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="UpdateTeamResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="team" type="tns:TeamResponse"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Delete team -->
+    <xs:element name="DeleteTeamRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="tns:IdType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="DeleteTeamResponse">
+        <xs:complexType/>
+    </xs:element>
+
+    <!-- Find all teams -->
+    <xs:element name="FindAllTeamsRequest">
+        <xs:complexType/>
+    </xs:element>
+
+    <xs:element name="FindAllTeamsResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="team" type="tns:TeamResponse" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Create person -->
+    <xs:element name="CreatePersonRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="person" type="tns:PersonRequest"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="CreatePersonResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="person" type="tns:PersonResponse"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Get person by id -->
+    <xs:element name="GetPersonByIdRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="tns:IdType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="GetPersonByIdResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="person" type="tns:PersonResponse"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Update person -->
+    <xs:element name="UpdatePersonRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="tns:IdType"/>
+                <xs:element name="person" type="tns:PersonRequest"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="UpdatePersonResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="person" type="tns:PersonResponse"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Delete person -->
+    <xs:element name="DeletePersonRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="tns:IdType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="DeletePersonResponse">
+        <xs:complexType/>
+    </xs:element>
+
+    <!-- Find all persons -->
+    <xs:element name="FindAllPersonsRequest">
+        <xs:complexType/>
+    </xs:element>
+
+    <xs:element name="FindAllPersonsResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="person" type="tns:PersonResponse" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Create dragon -->
+    <xs:element name="CreateDragonRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="dragon" type="tns:DragonRequest"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="CreateDragonResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="dragon" type="tns:DragonResponse"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Get dragon by id -->
+    <xs:element name="GetDragonByIdRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="tns:IdType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="GetDragonByIdResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="dragon" type="tns:DragonResponse"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Update dragon -->
+    <xs:element name="UpdateDragonRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="tns:IdType"/>
+                <xs:element name="dragon" type="tns:DragonRequest"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="UpdateDragonResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="dragon" type="tns:DragonResponse"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Delete dragon -->
+    <xs:element name="DeleteDragonRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="tns:IdType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="DeleteDragonResponse">
+        <xs:complexType/>
+    </xs:element>
+
+    <!-- Find all dragons -->
+    <xs:element name="SearchDragonsRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="page" type="xs:integer" minOccurs="0" default="0"/>
+                <xs:element name="size" type="xs:integer" minOccurs="0" default="10"/>
+                <xs:element name="sort" type="xs:string" minOccurs="0"/>
+                <xs:element name="filter" type="tns:Filter" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="SearchDragonsResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="dragon" type="tns:DragonResponse" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="page" type="xs:integer"/>
+                <xs:element name="size" type="xs:integer"/>
+                <xs:element name="total" type="xs:integer"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Get min dragon by name -->
+    <xs:element name="GetMinByNameDragonRequest">
+        <xs:complexType/>
+    </xs:element>
+
+    <xs:element name="GetMinByNameDragonResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="dragon" type="tns:DragonResponse"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Count dragons by type -->
+    <xs:element name="CountByTypeDragonRequest">
+        <xs:complexType/>
+    </xs:element>
+
+    <xs:element name="CountByTypeDragonResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="entry" type="tns:DragonTypeCount" minOccurs="0" maxOccurs="4"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Count dragons by type greater than -->
+    <xs:element name="CountByTypeGreaterDragonRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="type" type="tns:DragonType" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="CountByTypeGreaterDragonResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="number" type="xs:long" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>

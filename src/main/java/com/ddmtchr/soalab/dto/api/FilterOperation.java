@@ -2,8 +2,10 @@ package com.ddmtchr.soalab.dto.api;
 
 import lombok.Getter;
 
+import java.io.Serializable;
+
 @Getter
-public enum FilterOperation {
+public enum FilterOperation implements Serializable {
     EQ("=="),
     NE("!="),
     GT(">"),

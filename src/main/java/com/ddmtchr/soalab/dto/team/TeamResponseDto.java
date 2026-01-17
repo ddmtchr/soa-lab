@@ -1,18 +1,18 @@
 package com.ddmtchr.soalab.dto.team;
 
 import com.ddmtchr.soalab.dto.cave.CaveResponseDto;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JacksonXmlRootElement(localName = "team")
+//@JsonInclude(JsonInclude.Include.NON_NULL)
+//@JacksonXmlRootElement(localName = "team")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "Team")
 @XmlRootElement(name = "team")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,11 +20,14 @@ import lombok.NoArgsConstructor;
 public class TeamResponseDto {
 
     @NotNull
+    @XmlElement(required = true)
     private Long id;
 
     @NotBlank
+    @XmlElement(required = true)
     private String name;
 
     @Valid
+    @XmlElement
     private CaveResponseDto cave;
 }

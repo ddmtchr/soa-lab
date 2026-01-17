@@ -70,7 +70,7 @@ public class DragonSpecificationFactory {
             if (type == DragonType.class) return DragonType.valueOf(value);
             return value;
         } catch (DateTimeParseException | IllegalArgumentException e) {
-            throw new FilterValidationException("Failed to convert param with value '" + value + "' to type: '" + type.getSimpleName() + "'", e);
+            throw new FilterValidationException("Failed to convert param with value '" + value + "' to type: '" + type.getSimpleName() + "'");
         }
     }
 

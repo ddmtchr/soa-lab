@@ -1,13 +1,6 @@
 package com.ddmtchr.soalab.dto.cave;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,9 +8,10 @@ import lombok.Setter;
 
 import java.util.List;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JacksonXmlRootElement(localName = "caves")
+//@JsonInclude(JsonInclude.Include.NON_NULL)
+//@JacksonXmlRootElement(localName = "caves")
 @XmlRootElement(name = "caves")
+@XmlType(name = "Caves")
 @XmlAccessorType(XmlAccessType.FIELD)
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,8 +19,8 @@ import java.util.List;
 @Setter
 public class CaveListDto {
 
-    @JacksonXmlProperty(localName = "cave")
-    @JacksonXmlElementWrapper(useWrapping = false)
-    @XmlElement(name = "cave")
+//    @JacksonXmlProperty(localName = "cave")
+//    @JacksonXmlElementWrapper(useWrapping = false)
+    @XmlElement(name = "cave", required = true)
     private List<CaveResponseDto> content;
 }

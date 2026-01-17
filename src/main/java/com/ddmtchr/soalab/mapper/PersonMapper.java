@@ -3,6 +3,8 @@ package com.ddmtchr.soalab.mapper;
 import com.ddmtchr.soalab.dto.person.PersonRequestDto;
 import com.ddmtchr.soalab.dto.person.PersonResponseDto;
 import com.ddmtchr.soalab.entity.Person;
+import com.ddmtchr.soalab.schema.PersonRequest;
+import com.ddmtchr.soalab.schema.PersonResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
@@ -13,6 +15,12 @@ import org.mapstruct.MappingTarget;
 public interface PersonMapper {
 
     PersonResponseDto toResponseDto(Person entity);
+
+    PersonResponseDto toResponseDto(PersonResponse response);
+
+    PersonResponse toResponse(PersonResponseDto responseDto);
+
+    PersonRequestDto toRequestDto(PersonRequest request);
 
     PersonRequestDto responseDtoToRequestDto(PersonResponseDto responseDto);
 

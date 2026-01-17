@@ -1,18 +1,20 @@
 package com.ddmtchr.soalab.dto.api;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+//@JsonInclude(JsonInclude.Include.NON_NULL)
+//@JacksonXmlRootElement(localName = "response")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "Response")
 @XmlRootElement(name = "response")
-@JacksonXmlRootElement(localName = "response")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 public class ApiNumberResponse {
+
+    @XmlElement
     private Number number;
 }

@@ -1,7 +1,9 @@
 package com.ddmtchr.soalab.exception;
 
-public class PageableValidationException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+
+public class PageableValidationException extends CustomResponseStatusException {
     public PageableValidationException(String message) {
-        super(message);
+        super(HttpStatus.BAD_REQUEST, message);
     }
 }

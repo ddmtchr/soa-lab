@@ -3,6 +3,8 @@ package com.ddmtchr.soalab.mapper;
 import com.ddmtchr.soalab.dto.dragon.DragonRequestDto;
 import com.ddmtchr.soalab.dto.dragon.DragonResponseDto;
 import com.ddmtchr.soalab.entity.Dragon;
+import com.ddmtchr.soalab.schema.DragonRequest;
+import com.ddmtchr.soalab.schema.DragonResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
@@ -13,6 +15,12 @@ import org.mapstruct.MappingTarget;
 public interface DragonMapper {
 
     DragonResponseDto toResponseDto(Dragon entity);
+
+    DragonResponseDto toResponseDto(DragonResponse response);
+
+    DragonResponse toResponse(DragonResponseDto responseDto);
+
+    DragonRequestDto toRequestDto(DragonRequest request);
 
     DragonRequestDto responseDtoToRequestDto(DragonResponseDto responseDto);
 

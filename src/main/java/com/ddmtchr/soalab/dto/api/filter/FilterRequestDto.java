@@ -1,28 +1,25 @@
 package com.ddmtchr.soalab.dto.api.filter;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import jakarta.validation.Valid;
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JacksonXmlRootElement(localName = "filters")
+//@JsonInclude(JsonInclude.Include.NON_NULL)
+//@JacksonXmlRootElement(localName = "filters")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "Filters")
 @XmlRootElement(name = "filters")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 public class FilterRequestDto {
 
-    @JacksonXmlProperty(localName = "filter")
-    @JacksonXmlElementWrapper(useWrapping = false)
+//    @JacksonXmlProperty(localName = "filter")
+//    @JacksonXmlElementWrapper(useWrapping = false)
     @XmlElement(name = "filter")
     private List<@Valid FilterCriteria> filters;
 }
